@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head><title>fragments (not rendered directly)</title></head>
+<body>
+
+<!-- ============================================================
+     HEADER FRAGMENT
+     Server-rendered version of site.js's renderHeader() - same
+     CSS classes so css/pages/home.css etc. still apply, but the
+     links, login state, and cart count now come from the real
+     session + database instead of localStorage.
+     ============================================================ -->
+<div th:fragment="header">
+  <div class="st-topbar">
+    <div class="st-topbar-inner">
+      <span>&#127881; Free shipping on orders over Rs. 3000</span>
+    </div>
+  </div>
+  <header class="st-header">
+    <div class="st-header-inner">
+      <button class="st-hamburger" onclick="toggleMobileMenu()" aria-label="Open menu"><i class="fas fa-bars"></i></button>
+      <a th:href="@{/home}" class="st-logo"><img th:src="@{/image/ecommlogo2.jpg}" alt="Logo" /></a>
+      <nav class="st-nav-links desktop-only">
+        <a th:href="@{/home}" class="st-nav-link">Home</a>
+        <a th:href="@{/home}" class="st-nav-link">Categories</a>
+        <a th:href="@{/about}" class="st-nav-link">About</a>
+        <a th:href="@{/contact}" class="st-nav-link">Contact</a>
+        <a th:href="@{/become-seller}" class="st-nav-link">Sell With Us</a>
+      </nav>
+      <div class="st-search-wrap desktop-only">
+        <form th:action="@{/home}" method="get" style="display:flex;align-items:center;width:100%;">
+          <i class="fas fa-search"></i>
+          <input type="text" name="search" placeholder="Search products..." autocomplete="off" />
+        </form>
+      </div>
+      <div class="st-header-icons">
+        <a th:href="@{/cart}" class="st-icon-btn" aria-label="Cart"><i class="fas fa-cart-shopping"></i></a>
+        <a th:if="${session.username == null}" th:href="@{/login}" class="st-icon-btn desktop-only" aria-label="Login"><i class="far fa-user"></i></a>
+        <a th:if="${session.username != null}" th:href="@{/profile}" class="st-icon-btn desktop-only" aria-label="Account"><i class="far fa-user"></i></a>
+        <a th:if="${session.username != null}" th:href="@{/logout}" class="st-icon-btn desktop-only" aria-label="Logout"><i class="fas fa-right-from-bracket"></i></a>
+      </div>
+    </div>
+    <div class="st-search-wrap mobile-only st-search-wrap-mobile">
+      <form th:action="@{/home}" method="get" style="display:flex;align-items:center;width:100%;">
+        <i class="fas fa-search"></i>
+        <input type="text" name="search" placeholder="Search products..." autocomplete="off" />
+      </form>
+    </div>
+  </header>
+  <div class="st-mobile-drawer" id="stMobileDrawer">
+    <button class="st-drawer-close" onclick="toggleMobileMenu()" aria-label="Close menu">&times;</button>
+    <a th:href="@{/home}"><i class="fas fa-house"></i> Home</a>
+    <a th:href="@{/cart}"><i class="fas fa-cart-shopping"></i> Cart</a>
+    <a th:href="@{/profile}"><i class="fas fa-user"></i> Account</a>
+    <a th:href="@{/about}"><i class="fas fa-circle-info"></i> About</a>
+    <a th:href="@{/contact}"><i class="fas fa-envelope"></i> Contact</a>
+    <a th:href="@{/become-seller}"><i class="fas fa-shop"></i> Sell With Us</a>
+    <a th:if="${session.username == null}" th:href="@{/login}"><i class="fas fa-right-to-bracket"></i> Login</a>
+    <a th:if="${session.username != null}" th:href="@{/logout}"><i class="fas fa-right-from-bracket"></i> Logout</a>
+  </div>
+  <div class="st-mobile-overlay" id="stMobileOverlay" onclick="toggleMobileMenu()"></div>
+</div>
+
+<!-- ============================================================
+     FOOTER FRAGMENT
+     ============================================================ -->
+<div th:fragment="footer">
+  <footer class="st-footer">
+    <div class="st-footer-newsletter">
+      <div class="st-footer-newsletter-inner">
+        <div>
+          <h3>Get 10% off your first order</h3>
+          <p>Sign up for restock alerts, new arrivals, and exclusive deals.</p>
+        </div>
+      </div>
+    </div>
+    <div class="st-footer-main">
+      <div class="st-footer-col">
+        <img th:src="@{/image/ecommlogo2.jpg}" alt="Logo" class="st-footer-logo" />
+        <p>Quality products, honest prices, and fast delivery - with real people behind every order.</p>
+      </div>
+      <div class="st-footer-col">
+        <h4>Shop</h4>
+        <a th:href="@{/home}">All Products</a>
+      </div>
+      <div class="st-footer-col">
+        <h4>Customer Service</h4>
+        <a th:href="@{/contact}">Contact Us</a>
+        <a th:href="@{/become-seller}">Become a Seller</a>
+        <a th:href="@{/about}">About Us</a>
+      </div>
+      <div class="st-footer-col">
+        <h4>Contact</h4>
+        <p><i class="fas fa-location-dot"></i> Kathmandu, Nepal</p>
+        <p><i class="fas fa-envelope"></i> support@ekart.com</p>
+      </div>
+    </div>
+    <div class="st-footer-bottom">
+      <span>&copy; EKart. All rights reserved.</span>
+    </div>
+  </footer>
+</div>
+
+<script th:fragment="mobileMenuScript">
+  function toggleMobileMenu() {
+    document.getElementById("stMobileDrawer").classList.toggle("open");
+    document.getElementById("stMobileOverlay").classList.toggle("open");
+  }
+</script>
+
+<!-- Self-mounting widgets, same as every page in the original site -->
+<div th:fragment="widgets">
+  <script th:inline="javascript">
+    /*<![CDATA[*/
+    // Namespaces spin-wheel.js's localStorage keys per logged-in account,
+    // so switching users on the same browser doesn't inherit someone
+    // else's "already spun today" state or coupon.
+    window.EKART_USER = /*[[${session.username != null ? session.username : 'guest'}]]*/ 'guest';
+    /*]]>*/
+  </script>
+  <script th:src="@{/js/chatbot.js}"></script>
+  <script th:src="@{/js/spin-wheel.js}"></script>
+</div>
+
+</body>
+</html>

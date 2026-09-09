@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us — EKart</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" th:href="@{/css/pages/about.css}" />
+</head>
+<body>
+<div th:replace="~{fragments :: header}"></div>
+
+<div class="st-page-hero">
+  <h1>About EKart</h1>
+  <p>Quality products, honest prices, and real people behind every order.</p>
+</div>
+<div class="st-breadcrumbs"><a th:href="@{/home}">Home</a><span>/</span>About Us</div>
+
+<section class="ab-story">
+  <img th:src="@{/image/New arrivals.jpg}" alt="Our story" />
+  <div>
+    <h2>Our Story</h2>
+    <p>EKart started with a simple idea: make quality fashion, electronics, and everyday essentials easy to find and affordable, without compromising on service.</p>
+    <p>What began as a small catalog has grown into a full marketplace where independent sellers list their own products alongside our own — all backed by fast delivery.</p>
+    <p>We're honored to be part of your shopping journey, and we're just getting started.</p>
+  </div>
+</section>
+
+<section class="ab-stats">
+  <div class="ab-stat"><strong>50K+</strong><span>Happy Customers</span></div>
+  <div class="ab-stat"><strong>28+</strong><span>Product Categories</span></div>
+  <div class="ab-stat"><strong>99%</strong><span>On-Time Delivery</span></div>
+  <div class="ab-stat"><strong>4.6/5</strong><span>Average Rating</span></div>
+</section>
+
+<section class="st-section">
+  <div class="st-section-head"><div><h2>What We Stand For</h2></div></div>
+  <div class="ab-values">
+    <div class="ab-value"><i class="fas fa-medal"></i><h4>Quality First</h4><p>Every product is checked before it ships, so what you see is what you get.</p></div>
+    <div class="ab-value"><i class="fas fa-hand-holding-dollar"></i><h4>Fair Pricing</h4><p>No inflated prices — just honest value, with real discounts during our sales.</p></div>
+    <div class="ab-value"><i class="fas fa-truck-fast"></i><h4>Fast Delivery</h4><p>Local warehousing means most orders ship within 24 hours.</p></div>
+  </div>
+</section>
+
+<div th:replace="~{fragments :: footer}"></div>
+<div th:replace="~{fragments :: mobileMenuScript}"></div>
+<div th:replace="~{fragments :: widgets}"></div>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Become a Seller — EKart</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" th:href="@{/css/pages/becomesellerrr.css}" />
+</head>
+<body>
+<div th:replace="~{fragments :: header}"></div>
+
+<div class="st-page-hero">
+  <h1>Sell With Us</h1>
+  <p>Reach thousands of shoppers — set up your storefront on EKart in minutes.</p>
+</div>
+<div class="st-breadcrumbs"><a th:href="@{/home}">Home</a><span>/</span>Become a Seller</div>
+
+<section class="sell-wrap">
+  <div class="sell-info">
+    <h2>Grow your business with us</h2>
+    <p>Join our marketplace of independent sellers and get access to a growing customer base and simple order management.</p>
+    <div class="sell-perk"><i class="fas fa-users"></i><div><strong>Thousands of active shoppers</strong><span>Get discovered by ready-to-buy customers</span></div></div>
+    <div class="sell-perk"><i class="fas fa-box"></i><div><strong>Simple product management</strong><span>Add, edit and track your listings from your own dashboard</span></div></div>
+    <div class="sell-perk"><i class="fas fa-headset"></i><div><strong>Dedicated seller support</strong><span>Our team helps you get set up fast</span></div></div>
+  </div>
+
+  <div class="sell-form-card">
+    <h2 style="margin-top:0;">Seller Registration</h2>
+
+    <div th:if="${user.sellerStatus.name() == 'PENDING'}">
+      <p>Your application is <strong>pending review</strong>. We'll update your account as soon as it's approved.</p>
+    </div>
+    <div th:if="${user.sellerStatus.name() == 'REJECTED'}">
+      <p style="color:red;">Your previous application was not approved. You're welcome to apply again below.</p>
+    </div>
+    <p style="color:green" th:if="${message}" th:text="${message}"></p>
+
+    <form th:action="@{/become-seller}" method="post" th:unless="${user.sellerStatus.name() == 'PENDING'}">
+      <div class="form-group">
+        <label for="businessName">Shop Name</label>
+        <input type="text" id="businessName" name="businessName" required />
+      </div>
+      <button type="submit" class="submit-btn" style="width:100%;padding:13px;border-radius:999px !important;font-weight:700;">Submit Application</button>
+    </form>
+  </div>
+</section>
+
+<div th:replace="~{fragments :: footer}"></div>
+<div th:replace="~{fragments :: mobileMenuScript}"></div>
+<div th:replace="~{fragments :: widgets}"></div>
+</body>
+</html>

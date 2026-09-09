@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up — EKart</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" th:href="@{/css/pages/signup.css}" />
+</head>
+<body>
+<div class="st-auth-wrap">
+  <div class="st-auth-visual">
+    <img th:src="@{/image/ecommlogo2.jpg}" alt="Logo" class="st-auth-logo" />
+    <h2>Join thousands of happy shoppers</h2>
+    <p>Create a free account to speed up checkout and track every order.</p>
+    <ul class="auth-perks">
+      <li><i class="fas fa-check-circle"></i> 10% off your very first order</li>
+      <li><i class="fas fa-check-circle"></i> Early access to flash deals</li>
+      <li><i class="fas fa-check-circle"></i> Your own order history</li>
+    </ul>
+  </div>
+  <div class="st-auth-form-side">
+    <div class="st-auth-box">
+      <a th:href="@{/}" style="float:right;color:var(--muted);text-decoration:none;font-size:1.3rem;">×</a>
+      <h1>Create Account</h1>
+      <p class="st-sub">It only takes a minute</p>
+      <p style="color:red" th:if="${error}" th:text="${error}"></p>
+
+      <form class="login-form" th:action="@{/signup}" method="post">
+        <div class="auth-input-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" placeholder="Choose a username" required />
+        </div>
+
+        <div class="auth-input-group">
+          <label for="fullName">Full Name</label>
+          <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" />
+        </div>
+
+        <div class="auth-input-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="Enter your email" required />
+        </div>
+
+        <div class="auth-input-group">
+          <label for="phone">Phone</label>
+          <input type="text" id="phone" name="phone" placeholder="Enter your phone number" />
+        </div>
+
+        <div class="auth-input-group">
+          <label for="password">Password</label>
+          <div class="auth-input-container">
+            <input type="password" id="password" name="password" placeholder="Enter a strong password" required />
+            <span class="auth-toggle-pw" onclick="togglePassword('password', this)"><i class="fas fa-eye-slash"></i></span>
+          </div>
+        </div>
+
+        <button type="submit" class="add-cart-btn auth-submit">Sign up</button>
+
+        <p class="auth-footer-text">Already have an account? <a th:href="@{/login}">Login</a></p>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  function togglePassword(fieldId, iconElement) {
+    var input = document.getElementById(fieldId);
+    var icon = iconElement.querySelector('i');
+    var isPassword = input.type === 'password';
+    input.type = isPassword ? 'text' : 'password';
+    icon.classList.toggle('fa-eye');
+    icon.classList.toggle('fa-eye-slash');
+  }
+</script>
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  window.EKART_USER = /*[[${session.username != null ? session.username : 'guest'}]]*/ 'guest';
+  /*]]>*/
+</script>
+<script th:src="@{/js/chatbot.js}"></script>
+<script th:src="@{/js/spin-wheel.js}"></script>
+</body>
+</html>

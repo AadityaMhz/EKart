@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title th:text="${product.name} + ' — EKart'">Product Details — EKart</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" th:href="@{/css/pages/product-details.css}" />
+</head>
+<body>
+<div th:replace="~{fragments :: header}"></div>
+<div class="st-breadcrumbs"><a th:href="@{/home}">Home</a><span>/</span><span th:text="${product.name}"></span></div>
+
+<div class="pd-wrap">
+  <div class="pd-media">
+    <img th:if="${product.image != null}" th:src="'data:image/jpeg;base64,' + ${product.image}" th:alt="${product.name}" />
+    <div th:unless="${product.image != null}" class="st-tile" style="width:100%;height:100%;"><i class="fas" th:classappend="${product.icon != null ? product.icon : 'fa-box'}"></i></div>
+  </div>
+  <div class="pd-info">
+    <div class="pd-cat" th:text="${product.category != null ? product.category.name : ''}"></div>
+    <h1 class="pd-name" th:text="${product.name}"></h1>
+    <div class="pd-stars">
+      <span th:text="'★ ' + ${product.rating}"></span>
+      <span style="color:var(--muted);font-size:.8rem;" th:text="'(' + ${product.reviews} + ' reviews)'"></span>
+    </div>
+    <div class="pd-price-row">
+      <span class="pd-price" th:text="'Rs. ' + ${#numbers.formatDecimal(product.price,0,'COMMA',0,'POINT')}"></span>
+      <span class="pd-old-price" th:if="${product.oldPrice != null}" th:text="'Rs. ' + ${#numbers.formatDecimal(product.oldPrice,0,'COMMA',0,'POINT')}"></span>
+    </div>
+    <p class="pd-desc" th:text="${product.description}"></p>
+
+    <form th:action="@{/cart/add}" method="post" th:if="${product.stock > 0}">
+      <input type="hidden" name="productId" th:value="${product.id}" />
+      <div class="pd-field">
+        <label>Quantity</label>
+        <select name="quantity">
+          <option th:each="n : ${#numbers.sequence(1, T(java.lang.Math).min(10, product.stock))}" th:value="${n}" th:text="${n}"></option>
+        </select>
+      </div>
+      <div class="pd-actions">
+        <button type="submit" class="st-add-btn"><i class="fas fa-cart-plus"></i> Add to Cart</button>
+      </div>
+    </form>
+    <p th:unless="${product.stock > 0}" style="color:red;font-weight:600;">Out of stock</p>
+
+    <div class="pd-trust">
+      <span><i class="fas fa-truck"></i> Free shipping over Rs. 3000</span>
+      <span><i class="fas fa-rotate-left"></i> 7-day easy returns</span>
+      <span><i class="fas fa-shield-halved"></i> Secure checkout</span>
+    </div>
+
+    <ul class="pd-specs-list">
+      <li><span>Category</span><strong th:text="${product.category != null ? product.category.name : '-'}"></strong></li>
+      <li><span>Rating</span><strong th:text="${product.rating} + ' / 5'"></strong></li>
+      <li><span>Stock</span><strong th:text="${product.stock} + ' available'"></strong></li>
+      <li><span>Warranty</span><strong>7-day return window</strong></li>
+    </ul>
+  </div>
+</div>
+
+<section class="st-section" style="max-width:900px;margin:0 auto;">
+  <div class="st-section-head"><div><h2>Reviews</h2><p th:text="${product.reviews} + ' review(s) — ' + ${product.rating} + ' / 5 average'"></p></div></div>
+
+  <div th:if="${loggedIn and !alreadyReviewed}" style="margin-bottom:24px;">
+    <h3 style="font-size:1rem;margin-bottom:8px;">Write a Review</h3>
+    <form th:action="@{/product/{id}/review(id=${product.id})}" method="post">
+      <div class="pd-field">
+        <label>Rating</label>
+        <select name="rating" required>
+          <option value="5">★★★★★ (5)</option>
+          <option value="4">★★★★ (4)</option>
+          <option value="3">★★★ (3)</option>
+          <option value="2">★★ (2)</option>
+          <option value="1">★ (1)</option>
+        </select>
+      </div>
+      <div class="pd-field">
+        <label>Your Review</label>
+        <textarea name="comment" rows="3" style="width:100%;" placeholder="What did you think of this product?" required></textarea>
+      </div>
+      <button type="submit" class="st-add-btn">Submit Review</button>
+    </form>
+  </div>
+  <p th:if="${loggedIn and alreadyReviewed}" style="color:var(--muted);margin-bottom:24px;">You've already reviewed this product — thanks!</p>
+  <p th:unless="${loggedIn}" style="color:var(--muted);margin-bottom:24px;"><a th:href="@{/login}">Log in</a> to write a review.</p>
+
+  <div th:each="r : ${reviews}" style="border-top:1px solid var(--border, #eee);padding:14px 0;">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <strong th:text="${r.user.username}"></strong>
+      <span style="color:#e5a913;" th:text="${'★'.repeat(r.rating)}"></span>
+    </div>
+    <p style="margin:6px 0 0;color:var(--text, #333);" th:text="${r.comment}"></p>
+    <span style="color:var(--muted);font-size:.75rem;" th:text="${#temporals.format(r.createdAt, 'MMM d, yyyy')}"></span>
+  </div>
+  <p th:if="${#lists.isEmpty(reviews)}" style="color:var(--muted);">No reviews yet — be the first!</p>
+</section>
+
+<div th:replace="~{fragments :: footer}"></div>
+<div th:replace="~{fragments :: mobileMenuScript}"></div>
+<div th:replace="~{fragments :: widgets}"></div>
+</body>
+</html>

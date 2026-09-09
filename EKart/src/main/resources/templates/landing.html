@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EKart — Shop Smarter</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" th:href="@{/css/pages/landing.css}" />
+</head>
+<body>
+<div th:replace="~{fragments :: header}"></div>
+
+<section class="st-hero">
+  <div class="st-hero-main">
+    <div class="st-hero-slide active"><img th:src="@{/image/fatherdays.jpg}" alt="Sale" /></div>
+    <div class="st-hero-copy">
+      <span class="st-eyebrow">WELCOME TO EKART</span>
+      <h1>Sale up to 50% off</h1>
+      <p>Fashion, electronics, sports gear and more — all in one place, with fast delivery.</p>
+      <a th:href="@{/home}" class="add-cart-btn" style="padding:12px 26px;border-radius:999px;text-decoration:none;display:inline-block;">Shop Now</a>
+    </div>
+  </div>
+  <div class="st-hero-side">
+    <div class="st-hero-card st-hc-1">
+      <h3>New Here?</h3>
+      <p>Create an account for 10% off</p>
+      <a th:href="@{/signup}">Sign Up Free <i class="fas fa-arrow-right"></i></a>
+    </div>
+    <div class="st-hero-card st-hc-2">
+      <h3>Sell With Us</h3>
+      <p>Open your own storefront</p>
+      <a th:href="@{/become-seller}">Become a Seller <i class="fas fa-arrow-right"></i></a>
+    </div>
+  </div>
+</section>
+
+<section class="st-section">
+  <div class="st-section-head">
+    <div><h2>Featured Products</h2><p>A quick look at what's trending right now</p></div>
+    <a th:href="@{/home}" class="st-see-all">See all products <i class="fas fa-arrow-right"></i></a>
+  </div>
+  <div class="st-product-grid">
+    <div class="st-product-card" th:each="p : ${featuredProducts}">
+      <a th:href="@{/product/{id}(id=${p.id})}" class="st-product-media">
+        <span th:if="${p.badge != null}" th:text="${p.badge}" th:class="'st-badge st-badge-' + ${#strings.toLowerCase(p.badge)}"></span>
+        <img th:if="${p.image != null}" th:src="'data:image/jpeg;base64,' + ${p.image}" th:alt="${p.name}" />
+        <div th:unless="${p.image != null}" class="st-tile"><i class="fas" th:classappend="${p.icon != null ? p.icon : 'fa-box'}"></i></div>
+      </a>
+      <div class="st-product-body">
+        <div class="st-product-cat" th:text="${p.category != null ? p.category.name : ''}"></div>
+        <a th:href="@{/product/{id}(id=${p.id})}" class="st-product-name" th:text="${p.name}"></a>
+        <div class="st-stars"><span th:text="'★ ' + ${p.rating}"></span> <span class="st-review-count" th:text="'(' + ${p.reviews} + ')'"></span></div>
+        <div class="st-product-price">
+          <span class="st-price" th:text="'Rs. ' + ${#numbers.formatDecimal(p.price,0,'COMMA',0,'POINT')}"></span>
+          <span class="st-price-old" th:if="${p.oldPrice != null}" th:text="'Rs. ' + ${#numbers.formatDecimal(p.oldPrice,0,'COMMA',0,'POINT')}"></span>
+        </div>
+        <form th:action="@{/cart/add}" method="post" th:if="${p.stock > 0}">
+          <input type="hidden" name="productId" th:value="${p.id}" />
+          <input type="hidden" name="quantity" value="1" />
+          <button type="submit" class="st-add-btn"><i class="fas fa-cart-plus"></i> Add to Cart</button>
+        </form>
+        <p th:unless="${p.stock > 0}" style="color:red;font-size:.8rem;font-weight:600;margin:6px 0 0;">Out of stock</p>
+      </div>
+    </div>
+    <p th:if="${#lists.isEmpty(featuredProducts)}">No products yet — check back soon, or <a th:href="@{/become-seller}">become a seller</a> and add the first one.</p>
+  </div>
+</section>
+
+<section class="st-section">
+  <div class="st-perks-strip">
+    <div class="st-perk"><i class="fas fa-truck-fast"></i><div><strong>Free Shipping</strong><span>On orders over Rs. 3000</span></div></div>
+    <div class="st-perk"><i class="fas fa-rotate-left"></i><div><strong>Easy Returns</strong><span>7-day return policy</span></div></div>
+    <div class="st-perk"><i class="fas fa-shield-halved"></i><div><strong>Secure Payment</strong><span>eSewa, Khalti &amp; COD</span></div></div>
+    <div class="st-perk"><i class="fas fa-headset"></i><div><strong>24/7 Support</strong><span>We're here to help</span></div></div>
+  </div>
+</section>
+
+<div th:replace="~{fragments :: footer}"></div>
+<div th:replace="~{fragments :: mobileMenuScript}"></div>
+<div th:replace="~{fragments :: widgets}"></div>
+</body>
+</html>

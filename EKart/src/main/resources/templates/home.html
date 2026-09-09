@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EKart — Shop</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" th:href="@{/css/pages/home.css}" />
+</head>
+<body>
+<div th:replace="~{fragments :: header}"></div>
+
+<section class="st-section">
+  <div class="st-section-head">
+    <div>
+      <h2 th:if="${search != null and !search.isEmpty()}" th:text="'Results for &quot;' + ${search} + '&quot;'"></h2>
+      <h2 th:if="${search == null or search.isEmpty()}">Shop by Category</h2>
+    </div>
+  </div>
+  <div class="st-cat-grid">
+    <a th:each="c : ${categories}" th:href="@{/home(category=${c.name})}" class="st-cat-card"
+       th:classappend="${selectedCategory != null and selectedCategory == c.name} ? ' active' : ''">
+      <div class="st-cat-icon"><i class="fas" th:classappend="${c.icon}"></i></div>
+      <span th:text="${c.name}"></span>
+    </a>
+    <a th:href="@{/home}" class="st-cat-card"><div class="st-cat-icon"><i class="fas fa-border-all"></i></div><span>All</span></a>
+    <p th:if="${#lists.isEmpty(categories)}">No categories yet.</p>
+  </div>
+</section>
+
+<section class="st-section">
+  <div class="st-section-head">
+    <div><h2>All Products</h2><p th:text="${#lists.size(products)} + ' item(s)'"></p></div>
+  </div>
+  <div class="st-product-grid">
+    <div class="st-product-card" th:each="p : ${products}">
+      <a th:href="@{/product/{id}(id=${p.id})}" class="st-product-media">
+        <span th:if="${p.badge != null and !p.badge.isEmpty()}" th:text="${p.badge}" th:class="'st-badge st-badge-' + ${#strings.toLowerCase(p.badge)}"></span>
+        <img th:if="${p.image != null}" th:src="'data:image/jpeg;base64,' + ${p.image}" th:alt="${p.name}" />
+        <div th:unless="${p.image != null}" class="st-tile"><i class="fas" th:classappend="${p.icon != null ? p.icon : 'fa-box'}"></i></div>
+      </a>
+      <div class="st-product-body">
+        <div class="st-product-cat" th:text="${p.category != null ? p.category.name : ''}"></div>
+        <a th:href="@{/product/{id}(id=${p.id})}" class="st-product-name" th:text="${p.name}"></a>
+        <div class="st-stars"><span th:text="'★ ' + ${p.rating}"></span> <span class="st-review-count" th:text="'(' + ${p.reviews} + ')'"></span></div>
+        <div class="st-product-price">
+          <span class="st-price" th:text="'Rs. ' + ${#numbers.formatDecimal(p.price,0,'COMMA',0,'POINT')}"></span>
+          <span class="st-price-old" th:if="${p.oldPrice != null}" th:text="'Rs. ' + ${#numbers.formatDecimal(p.oldPrice,0,'COMMA',0,'POINT')}"></span>
+        </div>
+        <form th:action="@{/cart/add}" method="post" th:if="${p.stock > 0}">
+          <input type="hidden" name="productId" th:value="${p.id}" />
+          <input type="hidden" name="quantity" value="1" />
+          <button type="submit" class="st-add-btn"><i class="fas fa-cart-plus"></i> Add to Cart</button>
+        </form>
+        <p th:unless="${p.stock > 0}" style="color:red;font-size:.8rem;font-weight:600;margin:6px 0 0;">Out of stock</p>
+      </div>
+    </div>
+    <p th:if="${#lists.isEmpty(products)}">No products found.</p>
+  </div>
+</section>
+
+<div th:replace="~{fragments :: footer}"></div>
+<div th:replace="~{fragments :: mobileMenuScript}"></div>
+<div th:replace="~{fragments :: widgets}"></div>
+</body>
+</html>

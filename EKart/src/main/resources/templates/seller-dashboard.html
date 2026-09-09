@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller Dashboard — EKart</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" th:href="@{/css/pages/admin.css}" />
+</head>
+<body>
+<div class="admin-container">
+    <!-- Sidebar -->
+    <div class="admin-sidebar" id="adminSidebar">
+        <div class="admin-logo"><h2 style="color:#fff;">EKart Seller</h2></div>
+        <nav class="admin-nav">
+            <a href="#" class="nav-item active" data-target="dashboard" onclick="showSection('dashboard', this)"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a href="#" class="nav-item" data-target="products" onclick="showSection('products', this)"><i class="fas fa-box"></i> Products</a>
+            <a href="#" class="nav-item" data-target="orders" onclick="showSection('orders', this)"><i class="fas fa-shopping-cart"></i> Orders</a>
+            <a href="#" class="nav-item" data-target="customer" onclick="showSection('customer', this)"><i class="fas fa-users"></i> Customers</a>
+            <a href="#" class="nav-item" data-target="category" onclick="showSection('category', this)"><i class="fas fa-list"></i> Category</a>
+            <a th:href="@{/logout}" class="nav-item"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="admin-main">
+        <header class="admin-header">
+            <button class="sidebar-toggle" id="sidebarToggle"><i class="fas fa-bars"></i></button>
+            <h1 id="pageTitle">Dashboard</h1>
+            <div class="user-menu">
+                <span th:text="${seller.fullName != null and !seller.fullName.isEmpty() ? seller.fullName : seller.username}"></span>
+            </div>
+        </header>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="content-section active">
+            <div class="dashboard-cards">
+                <div class="card">
+                    <div class="card-header"><div class="card-title">My Products</div><div class="card-icon bg-info"><i class="fas fa-box"></i></div></div>
+                    <div class="card-value" th:text="${#lists.size(products)}">0</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><div class="card-title">Order Lines</div><div class="card-icon bg-success"><i class="fas fa-shopping-cart"></i></div></div>
+                    <div class="card-value" th:text="${#lists.size(orderItems)}">0</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><div class="card-title">Customers</div><div class="card-icon bg-warning"><i class="fas fa-users"></i></div></div>
+                    <div class="card-value" th:text="${#sets.size(customers)}">0</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Products Section -->
+        <section id="products" class="content-section">
+            <div class="table-container">
+                <div class="table-header">
+                    <div class="table-title">Products</div>
+                    <div class="table-actions">
+                        <button class="btn btn-primary" onclick="document.getElementById('productFormContainer').style.display='block'"><i class="fas fa-plus"></i> Add Product</button>
+                    </div>
+                </div>
+                <table>
+                    <thead>
+                        <tr><th>ID</th><th>Product</th><th>Category</th><th>Price</th><th>Stock</th><th>Status</th><th>Actions</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="p : ${products}">
+                            <td th:text="${p.id}"></td>
+                            <td th:text="${p.name}"></td>
+                            <td th:text="${p.category != null ? p.category.name : '-'}"></td>
+                            <td th:text="'Rs. ' + ${#numbers.formatDecimal(p.price,0,'COMMA',0,'POINT')}"></td>
+                            <td th:text="${p.stock}"></td>
+                            <td th:text="${p.active ? 'Active' : 'Inactive'}"></td>
+                            <td>
+                                <form th:action="@{/seller/product/delete}" method="post" style="display:inline;">
+                                    <input type="hidden" name="id" th:value="${p.id}" />
+                                    <button type="submit" class="action-btn delete-product" title="Deactivate"><i class="fas fa-trash"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(products)}"><td colspan="7">You haven't added any products yet.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Add Product Form -->
+            <div class="form-container" id="productFormContainer" style="display: none;">
+                <h3 class="form-title">Add Product</h3>
+                <form th:action="@{/seller/product/add}" method="post" enctype="multipart/form-data">
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group"><label class="form-label">Product Name</label><input type="text" class="form-control" name="name" required></div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group"><label class="form-label">Price</label><input type="number" class="form-control" name="price" min="0" step="0.01" required></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label class="form-label">Category</label>
+                                <select class="form-control" name="categoryId" required>
+                                    <option value="">Select category</option>
+                                    <option th:each="c : ${categories}" th:value="${c.id}" th:text="${c.name}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group"><label class="form-label">Stock Quantity</label><input type="number" class="form-control" name="stock" min="0" required></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group"><label class="form-label">Old Price (optional, for a sale badge)</label><input type="number" class="form-control" name="oldPrice" min="0" step="0.01"></div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group"><label class="form-label">Badge</label>
+                                <select class="form-control" name="badge">
+                                    <option value="">None</option>
+                                    <option value="NEW">NEW</option>
+                                    <option value="SALE">SALE</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group"><label class="form-label">Description</label><textarea class="form-control" name="description" rows="4"></textarea></div>
+                    <div class="form-group"><label class="form-label">Product Image</label><input type="file" class="form-control" name="image" accept="image/*"></div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Save Product</button>
+                        <button type="button" class="btn btn-secondary" onclick="document.getElementById('productFormContainer').style.display='none'">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Orders Section -->
+        <section id="orders" class="content-section">
+            <div class="table-container">
+                <div class="table-header"><div class="table-title">Orders Involving My Products</div></div>
+                <table>
+                    <thead>
+                        <tr><th>Order ID</th><th>Customer</th><th>Product</th><th>Qty</th><th>Amount</th><th>Status</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="oi : ${orderItems}">
+                            <td th:text="'ORD' + ${oi.orders.id}"></td>
+                            <td th:text="${oi.orders.user.username}"></td>
+                            <td th:text="${oi.product.name}"></td>
+                            <td th:text="${oi.quantity}"></td>
+                            <td th:text="'Rs. ' + ${#numbers.formatDecimal(oi.priceAtPurchase * oi.quantity,0,'COMMA',0,'POINT')}"></td>
+                            <td th:text="${oi.orders.status}"></td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(orderItems)}"><td colspan="6">No orders yet.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Customer Section -->
+        <section id="customer" class="content-section">
+            <div class="table-container">
+                <div class="table-header"><div class="table-title">Customers</div></div>
+                <table>
+                    <thead><tr><th>ID</th><th>Username</th><th>Email</th></tr></thead>
+                    <tbody>
+                        <tr th:each="c : ${customers}">
+                            <td th:text="${c.id}"></td>
+                            <td th:text="${c.username}"></td>
+                            <td th:text="${c.email}"></td>
+                        </tr>
+                        <tr th:if="${#sets.isEmpty(customers)}"><td colspan="3">No customers yet.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Category Section -->
+        <section id="category" class="content-section">
+            <div class="form-container">
+                <h3 class="form-title">Add Category</h3>
+                <form th:action="@{/seller/category/add}" method="post">
+                    <div class="form-group"><label class="form-label">Category Name</label><input type="text" class="form-control" name="name" required></div>
+                    <div class="form-group"><label class="form-label">Icon (font-awesome class, e.g. fa-shirt)</label><input type="text" class="form-control" name="icon" placeholder="fa-shirt"></div>
+                    <div class="form-group"><button type="submit" class="btn btn-primary">Add Category</button></div>
+                </form>
+            </div>
+            <div class="table-container">
+                <div class="table-header"><div class="table-title">All Categories</div></div>
+                <table>
+                    <thead><tr><th>ID</th><th>Name</th><th>Icon</th></tr></thead>
+                    <tbody>
+                        <tr th:each="c : ${categories}">
+                            <td th:text="${c.id}"></td>
+                            <td th:text="${c.name}"></td>
+                            <td th:text="${c.icon}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</div>
+
+<script>
+    function showSection(target, link) {
+        document.querySelectorAll('.admin-nav .nav-item[data-target]').forEach(function (n) { n.classList.remove('active'); });
+        document.querySelectorAll('.content-section').forEach(function (s) { s.classList.remove('active'); });
+        link.classList.add('active');
+        document.getElementById(target).classList.add('active');
+        document.getElementById('pageTitle').textContent = link.textContent.trim();
+    }
+    document.getElementById('sidebarToggle').addEventListener('click', function () {
+        document.getElementById('adminSidebar').classList.toggle('collapsed');
+    });
+</script>
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  window.EKART_USER = /*[[${session.username != null ? session.username : 'guest'}]]*/ 'guest';
+  /*]]>*/
+</script>
+<script th:src="@{/js/chatbot.js}"></script>
+<script th:src="@{/js/spin-wheel.js}"></script>
+</body>
+</html>
