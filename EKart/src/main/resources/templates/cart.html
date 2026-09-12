@@ -1,118 +1,570 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <title>Your Cart — EKart</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
   <link rel="stylesheet" th:href="@{/css/pages/cart.css}" />
 </head>
+
 <body>
+
+<!-- HEADER -->
 <div th:replace="~{fragments :: header}"></div>
-<div class="st-breadcrumbs"><a th:href="@{/home}">Home</a><span>/</span>Cart</div>
 
-<div class="cart-wrap">
-  <div>
-    <h2 style="margin:6px 0 14px;">Your Cart</h2>
-    <p style="color:red;font-weight:600;" th:if="${error}" th:text="${error}"></p>
-    <div class="cart-items">
-      <div class="cart-empty" th:if="${#lists.isEmpty(cartItems)}">
-        <i class="fas fa-cart-shopping"></i>
-        <p>Your cart is empty.</p>
-        <a th:href="@{/home}" class="add-cart-btn" style="text-decoration:none;padding:10px 22px;border-radius:999px;display:inline-block;">Start Shopping</a>
-      </div>
-
-      <div class="cart-row" th:each="item : ${cartItems}">
-        <div class="cart-thumb">
-          <img th:if="${item.product.image != null}" th:src="'data:image/jpeg;base64,' + ${item.product.image}" th:alt="${item.product.name}" />
-          <i th:unless="${item.product.image != null}" class="fas" th:classappend="${item.product.icon != null ? item.product.icon : 'fa-box'}"></i>
-        </div>
-        <div class="cart-meta">
-          <h4 th:text="${item.product.name}"></h4>
-          <span class="cart-price" th:text="'Rs. ' + ${#numbers.formatDecimal(item.product.price,0,'COMMA',0,'POINT')}"></span>
-        </div>
-        <form th:action="@{/cart/update}" method="post" class="cart-qty">
-          <input type="hidden" name="itemId" th:value="${item.id}" />
-          <button type="submit" name="quantity" th:value="${item.quantity - 1}">−</button>
-          <span th:text="${item.quantity}"></span>
-          <button type="submit" name="quantity" th:value="${item.quantity + 1}">+</button>
-        </form>
-        <form th:action="@{/cart/remove}" method="post">
-          <input type="hidden" name="itemId" th:value="${item.id}" />
-          <button type="submit" class="cart-remove"><i class="fas fa-trash"></i></button>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <div class="summary-card">
-    <h3>Order Summary</h3>
-    <div class="summary-row"><span>Subtotal</span><span id="cartSubtotal" th:text="'Rs. ' + ${#numbers.formatDecimal(cartTotal,0,'COMMA',0,'POINT')}" th:data-value="${cartTotal}"></span></div>
-    <div class="summary-row" id="couponRow" style="display:none;color:#2e7d32;">
-      <span id="couponLabel">Coupon</span><span id="couponAmount"></span>
-    </div>
-    <div class="summary-row"><span>Shipping</span><span th:text="${cartTotal >= 3000 or cartTotal == 0} ? 'Free' : 'Rs. 150'"></span></div>
-    <div class="summary-total">
-      <span>Total</span>
-      <span id="cartGrandTotal" th:text="'Rs. ' + ${#numbers.formatDecimal(cartTotal == 0 ? 0 : (cartTotal >= 3000 ? cartTotal : cartTotal + 150),0,'COMMA',0,'POINT')}"></span>
-    </div>
-
-    <form th:action="@{/checkout}" method="post" th:if="${!#lists.isEmpty(cartItems)}" id="checkoutForm">
-      <input type="hidden" name="couponCode" id="couponCodeField" value="" />
-      <div class="payment-options">
-        <h4 style="font-size:.85rem;margin:10px 0 4px;">Shipping Address</h4>
-        <textarea name="shippingAddress" rows="3" style="width:100%;" placeholder="Enter your delivery address" required></textarea>
-        <h4 style="font-size:.85rem;margin:10px 0 4px;">Payment Method</h4>
-        <label><input type="radio" name="payment" value="Cash on Delivery" checked /> Cash on Delivery</label>
-        <label><input type="radio" name="payment" value="eSewa" /> eSewa</label>
-        <label><input type="radio" name="payment" value="Khalti" /> Khalti</label>
-      </div>
-      <button type="submit" class="checkout-btn" style="display:block;width:100%;text-align:center;padding:13px;border-radius:999px !important;margin-top:14px;">Proceed to Checkout</button>
-    </form>
-  </div>
+<!-- BREADCRUMB -->
+<div class="st-breadcrumbs">
+  <a th:href="@{/home}">Home</a>
+  <span>/</span>
+  Cart
 </div>
 
+
+<div class="cart-wrap">
+
+  <!-- ================= LEFT SIDE ================= -->
+
+  <div>
+
+    <h2 style="margin:6px 0 14px;">Your Cart</h2>
+
+    <p style="color:red;font-weight:600;"
+       th:if="${error}"
+       th:text="${error}">
+    </p>
+
+
+    <div class="cart-items">
+
+      <!-- EMPTY CART -->
+
+      <div class="cart-empty"
+           th:if="${#lists.isEmpty(cartItems)}">
+
+        <i class="fas fa-cart-shopping"></i>
+
+        <p>Your cart is empty.</p>
+
+        <a th:href="@{/home}"
+           class="add-cart-btn"
+           style="text-decoration:none;
+                  padding:10px 22px;
+                  border-radius:999px;
+                  display:inline-block;">
+          Start Shopping
+        </a>
+
+      </div>
+
+
+      <!-- CART ITEMS -->
+
+      <div class="cart-row"
+           th:each="item : ${cartItems}">
+
+        <div class="cart-thumb">
+
+          <img th:if="${item.product.image != null}"
+               th:src="'data:image/jpeg;base64,' + ${item.product.image}"
+               th:alt="${item.product.name}" />
+
+          <i th:unless="${item.product.image != null}"
+             class="fas"
+             th:classappend="${item.product.icon != null ? item.product.icon : 'fa-box'}">
+          </i>
+
+        </div>
+
+
+        <div class="cart-meta">
+
+          <h4 th:text="${item.product.name}"></h4>
+
+          <span class="cart-price"
+                th:text="'Rs. ' + ${#numbers.formatDecimal(item.product.price,0,'COMMA',0,'POINT')}">
+          </span>
+
+        </div>
+
+
+        <!-- QUANTITY -->
+
+        <form th:action="@{/cart/update}"
+              method="post"
+              class="cart-qty">
+
+          <input type="hidden"
+                 name="itemId"
+                 th:value="${item.id}" />
+
+          <button type="submit"
+                  name="quantity"
+                  th:value="${item.quantity - 1}">
+            −
+          </button>
+
+          <span th:text="${item.quantity}"></span>
+
+          <button type="submit"
+                  name="quantity"
+                  th:value="${item.quantity + 1}">
+            +
+          </button>
+
+        </form>
+
+
+        <!-- REMOVE -->
+
+        <form th:action="@{/cart/remove}"
+              method="post">
+
+          <input type="hidden"
+                 name="itemId"
+                 th:value="${item.id}" />
+
+          <button type="submit"
+                  class="cart-remove">
+
+            <i class="fas fa-trash"></i>
+
+          </button>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================= ORDER SUMMARY ================= -->
+
+  <div class="summary-card">
+
+    <h3>Order Summary</h3>
+
+
+    <!-- SUBTOTAL -->
+
+    <div class="summary-row">
+
+      <span>Subtotal</span>
+
+      <span id="cartSubtotal"
+            th:text="'Rs. ' + ${#numbers.formatDecimal(cartTotal,0,'COMMA',0,'POINT')}"
+            th:data-value="${cartTotal}">
+      </span>
+
+    </div>
+
+
+    <!-- COUPON -->
+
+    <div class="summary-row"
+         id="couponRow"
+         style="display:none;color:#2e7d32;">
+
+      <span id="couponLabel">
+        Coupon
+      </span>
+
+      <span id="couponAmount"></span>
+
+    </div>
+
+
+    <!-- SHIPPING -->
+
+    <div class="summary-row">
+
+      <span>Shipping</span>
+
+      <span th:text="${cartTotal >= 3000 or cartTotal == 0}
+                    ? 'Free'
+                    : 'Rs. 150'">
+      </span>
+
+    </div>
+
+
+    <!-- TOTAL -->
+
+    <div class="summary-total">
+
+      <span>Total</span>
+
+      <span id="cartGrandTotal"
+            th:text="'Rs. ' + ${#numbers.formatDecimal(
+              cartTotal == 0
+              ? 0
+              : (cartTotal >= 3000
+                  ? cartTotal
+                  : cartTotal + 150),
+              0,'COMMA',0,'POINT')}">
+      </span>
+
+    </div>
+
+
+    <!-- ================= CHECKOUT FORM ================= -->
+
+    <form th:action="@{/checkout}"
+          method="post"
+          th:if="${!#lists.isEmpty(cartItems)}"
+          id="checkoutForm">
+
+
+      <input type="hidden"
+             name="couponCode"
+             id="couponCodeField"
+             value="" />
+
+
+      <div class="payment-options">
+
+
+        <!-- SHIPPING ADDRESS -->
+
+        <h4 style="font-size:.85rem;margin:10px 0 4px;">
+          Shipping Address
+        </h4>
+
+
+        <textarea
+                name="shippingAddress"
+                rows="3"
+                style="width:100%;"
+                placeholder="Enter your delivery address"
+                required></textarea>
+
+
+        <!-- PAYMENT METHOD -->
+
+        <h4 style="font-size:.85rem;margin:10px 0 4px;">
+          Payment Method
+        </h4>
+
+
+        <label>
+
+          <input
+                  type="radio"
+                  name="payment"
+                  value="Cash on Delivery"
+                  checked />
+
+          Cash on Delivery
+
+        </label>
+
+
+        <label>
+
+          <input
+                  type="radio"
+                  name="payment"
+                  value="eSewa" />
+
+          eSewa
+
+        </label>
+
+
+        <label>
+
+          <input
+                  type="radio"
+                  name="payment"
+                  value="Bank" />
+
+          Bank
+
+        </label>
+
+
+      </div>
+
+
+      <button
+              type="submit"
+              class="checkout-btn"
+              style="display:block;
+                 width:100%;
+                 text-align:center;
+                 padding:13px;
+                 border-radius:999px !important;
+                 margin-top:14px;">
+
+        Proceed to Checkout
+
+      </button>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+<!-- ================= COUPON SCRIPT ================= -->
+
 <script th:inline="javascript">
-  // Picks up a coupon won from the Spin & Win widget (stored in localStorage
-  // by js/spin-wheel.js, namespaced per account) and shows the discount here.
-  // The server re-checks the code and computes the real discount independently
-  // at checkout - this is just for display before you submit.
+
   (function () {
-    var CURRENT_USER = /*[[${session.username != null ? session.username : 'guest'}]]*/ 'guest';
-    var COUPON_TABLE = { SPIN5: 5, SPIN10: 10, SPIN15: 15, SPIN20: 20 };
+
+    var CURRENT_USER =
+            /*[[${session.username != null ? session.username : 'guest'}]]*/
+            'guest';
+
+    var COUPON_TABLE = {
+      SPIN5: 5,
+      SPIN10: 10,
+      SPIN15: 15,
+      SPIN20: 20
+    };
+
     var code = null;
+
     try {
-      code = localStorage.getItem("sw_active_coupon_" + CURRENT_USER);
-      var expiry = Number(localStorage.getItem("sw_coupon_expiry_" + CURRENT_USER) || 0);
+
+      code = localStorage.getItem(
+              "sw_active_coupon_" + CURRENT_USER
+      );
+
+      var expiry = Number(
+              localStorage.getItem(
+                      "sw_coupon_expiry_" + CURRENT_USER
+              ) || 0
+      );
+
       if (code && expiry && Date.now() > expiry) {
-        code = null; // expired
+        code = null;
       }
-    } catch (e) { code = null; }
 
-    if (!code || !COUPON_TABLE[code]) return;
+    } catch (e) {
 
-    var subtotalEl = document.getElementById("cartSubtotal");
-    if (!subtotalEl) return;
-    var subtotal = Number(subtotalEl.getAttribute("data-value") || 0);
-    if (subtotal <= 0) return;
+      code = null;
 
-    var percent = COUPON_TABLE[code];
-    var discount = Math.round(subtotal * percent / 100);
-    var shipping = subtotal >= 3000 ? 0 : 150;
-    var newTotal = subtotal - discount + shipping;
+    }
 
-    document.getElementById("couponRow").style.display = "flex";
-    document.getElementById("couponLabel").textContent = "Coupon (" + code + ")";
-    document.getElementById("couponAmount").textContent = "− Rs. " + discount.toLocaleString("en-IN");
-    document.getElementById("cartGrandTotal").textContent = "Rs. " + newTotal.toLocaleString("en-IN");
 
-    var field = document.getElementById("couponCodeField");
-    if (field) field.value = code;
+    if (!code || !COUPON_TABLE[code]) {
+      return;
+    }
+
+
+    var subtotalEl =
+            document.getElementById("cartSubtotal");
+
+
+    if (!subtotalEl) {
+      return;
+    }
+
+
+    var subtotal =
+            Number(
+                    subtotalEl.getAttribute("data-value") || 0
+            );
+
+
+    if (subtotal <= 0) {
+      return;
+    }
+
+
+    var percent =
+            COUPON_TABLE[code];
+
+
+    var discount =
+            Math.round(subtotal * percent / 100);
+
+
+    var shipping =
+            subtotal >= 3000 ? 0 : 150;
+
+
+    var newTotal =
+            subtotal - discount + shipping;
+
+
+    document.getElementById(
+            "couponRow"
+    ).style.display = "flex";
+
+
+    document.getElementById(
+            "couponLabel"
+    ).textContent =
+            "Coupon (" + code + ")";
+
+
+    document.getElementById(
+            "couponAmount"
+    ).textContent =
+            "− Rs. " +
+            discount.toLocaleString("en-IN");
+
+
+    document.getElementById(
+            "cartGrandTotal"
+    ).textContent =
+            "Rs. " +
+            newTotal.toLocaleString("en-IN");
+
+
+    document.getElementById(
+            "couponCodeField"
+    ).value = code;
+
   })();
+
 </script>
 
+
+<!-- ================= PAYMENT REDIRECT ================= -->
+
+<script>
+
+  document.addEventListener(
+          "DOMContentLoaded",
+          function () {
+
+            var checkoutForm =
+                    document.getElementById("checkoutForm");
+
+
+            if (!checkoutForm) {
+              return;
+            }
+
+
+            checkoutForm.addEventListener(
+                    "submit",
+                    function (event) {
+
+                      var selectedPayment =
+                              document.querySelector(
+                                      'input[name="payment"]:checked'
+                              );
+
+
+                      if (!selectedPayment) {
+                        return;
+                      }
+
+
+                      var shippingAddress =
+                              document.querySelector(
+                                      'textarea[name="shippingAddress"]'
+                              ).value.trim();
+
+
+                      if (!shippingAddress) {
+
+                        alert(
+                                "Please enter your shipping address."
+                        );
+
+                        event.preventDefault();
+
+                        return;
+
+                      }
+
+
+                      var couponCode =
+                              document.getElementById(
+                                      "couponCodeField"
+                              ).value;
+
+
+                      /* ================= BANK ================= */
+
+                      if (selectedPayment.value === "Bank") {
+
+                        event.preventDefault();
+
+
+                        sessionStorage.setItem(
+                                "bankShippingAddress",
+                                shippingAddress
+                        );
+
+
+                        sessionStorage.setItem(
+                                "bankCouponCode",
+                                couponCode
+                        );
+
+
+                        window.location.href =
+                                "/bank-payment";
+
+                        return;
+
+                      }
+
+
+                      /* ================= ESEWA ================= */
+
+                      if (selectedPayment.value === "eSewa") {
+
+                        event.preventDefault();
+
+
+                        sessionStorage.setItem(
+                                "esewaShippingAddress",
+                                shippingAddress
+                        );
+
+
+                        sessionStorage.setItem(
+                                "esewaCouponCode",
+                                couponCode
+                        );
+
+
+                        window.location.href =
+                                "/esewa-payment";
+
+                        return;
+
+                      }
+
+
+                      /*
+                       * Cash on Delivery
+                       *
+                       * Nothing is prevented.
+                       * Form submits normally to /checkout.
+                       */
+
+                    }
+            );
+
+          }
+  );
+
+</script>
+
+
+<!-- FOOTER -->
+
 <div th:replace="~{fragments :: footer}"></div>
+
 <div th:replace="~{fragments :: mobileMenuScript}"></div>
+
 <div th:replace="~{fragments :: widgets}"></div>
+
 </body>
 </html>

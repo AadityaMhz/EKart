@@ -43,12 +43,146 @@ public class OrderController {
         return userRepo.findByUsername(username);
     }
 
+    @GetMapping("/bank-payment")
+    public String bankPayment(HttpSession session, Model m) {
+
+        UserTbl user = currentUser(session);
+
+        if (user == null) {
+
+            m.addAttribute(
+                    "error",
+                    "Login First!!!"
+            );
+
+            return "login";
+        }
+
+
+        List<CartItem> items =
+                cartRepo.findByUser(user);
+
+
+        if (items.isEmpty()) {
+
+            return "redirect:/cart";
+
+        }
+
+
+        double cartTotal =
+                items.stream()
+                        .mapToDouble(item ->
+                                item.getProduct().getPrice()
+                                        * item.getQuantity())
+                        .sum();
+
+
+        double shipping =
+                cartTotal >= 3000
+                        ? 0
+                        : 150;
+
+
+        double grandTotal =
+                cartTotal + shipping;
+
+
+        m.addAttribute(
+                "cartTotal",
+                cartTotal
+        );
+
+
+        m.addAttribute(
+                "shipping",
+                shipping
+        );
+
+
+        m.addAttribute(
+                "grandTotal",
+                grandTotal
+        );
+
+
+        return "bank-payment";
+    }
+    @GetMapping("/esewa-payment")
+    public String esewaPayment(HttpSession session, Model m) {
+
+        UserTbl user = currentUser(session);
+
+        if (user == null) {
+
+            m.addAttribute(
+                    "error",
+                    "Login First!!!"
+            );
+
+            return "login";
+        }
+
+
+        List<CartItem> items =
+                cartRepo.findByUser(user);
+
+
+        if (items.isEmpty()) {
+
+            return "redirect:/cart";
+
+        }
+
+
+        double cartTotal =
+                items.stream()
+                        .mapToDouble(item ->
+                                item.getProduct().getPrice()
+                                        * item.getQuantity())
+                        .sum();
+
+
+        double shipping =
+                cartTotal >= 3000
+                        ? 0
+                        : 150;
+
+
+        double grandTotal =
+                cartTotal + shipping;
+
+
+        m.addAttribute(
+                "cartTotal",
+                cartTotal
+        );
+
+
+        m.addAttribute(
+                "shipping",
+                shipping
+        );
+
+
+        m.addAttribute(
+                "grandTotal",
+                grandTotal
+        );
+
+
+        return "esewa-payment";
+    }
+
+
     @PostMapping("/checkout")
-    @Transactional //needed so the order save + cart cleanup run as one unit; without
-                    //it, deleteByUser has no active transaction to run inside of
-    public String checkout(@RequestParam("shippingAddress") String shippingAddress,
-                            @RequestParam(value = "couponCode", required = false) String couponCode,
-                            HttpSession session, Model m) {
+    @Transactional
+    public String checkout(
+            @RequestParam("shippingAddress") String shippingAddress,
+            @RequestParam(value = "couponCode", required = false) String couponCode,
+            @RequestParam(value = "payment", required = false) String payment,
+            HttpSession session,
+            Model m) {
         UserTbl user = currentUser(session);
         if (user == null) {
             m.addAttribute("error", "Login First!!!");
@@ -73,9 +207,20 @@ public class OrderController {
         }
 
         Orders order = new Orders();
+
         order.setUser(user);
+
         order.setShippingAddress(shippingAddress);
+
         order.setStatus(OrderStatus.PLACED);
+
+
+// Save payment method
+        if (payment == null || payment.trim().isEmpty()) {
+            payment = "Cash on Delivery";
+        }
+
+        order.setPaymentMethod(payment);
 
         double subtotal = 0;
         for (CartItem ci : items) {

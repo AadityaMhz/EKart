@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Bank Payment — EKart</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <link rel="stylesheet" th:href="@{/css/pages/cart.css}">
+    <link rel="stylesheet" th:href="@{/css/pages/bank-payment.css}">
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div th:replace="~{fragments :: header}"></div>
+
+
+<!-- BREADCRUMB -->
+<div class="st-breadcrumbs">
+    <a th:href="@{/home}">Home</a>
+    <span>/</span>
+
+    <a th:href="@{/cart}">Cart</a>
+    <span>/</span>
+
+    Bank Payment
+</div>
+
+
+<!-- MAIN PAYMENT AREA -->
+<div class="payment-container">
+
+    <!-- BANK PAYMENT CARD -->
+    <div class="payment-card">
+
+        <div class="payment-heading">
+            <h2>
+                <i class="fas fa-building-columns"></i>
+                Bank Payment
+            </h2>
+
+            <p>
+                Enter your bank details to complete your payment.
+            </p>
+        </div>
+
+
+        <form id="bankPaymentForm"
+              th:action="@{/checkout}"
+              method="post">
+
+            <!-- SHIPPING ADDRESS -->
+
+            <div class="form-group">
+
+                <label for="shippingAddress">
+                    Delivery Address
+                </label>
+
+                <textarea
+                        id="shippingAddress"
+                        name="shippingAddress"
+                        rows="3"
+                        placeholder="Enter your delivery address"
+                        required></textarea>
+
+            </div>
+
+
+            <!-- COUPON -->
+
+            <input
+                    type="hidden"
+                    name="couponCode"
+                    id="couponCode"
+                    value="">
+
+
+            <!-- BANK -->
+
+            <div class="form-group">
+
+                <label for="bank">
+                    Select Bank
+                </label>
+
+                <select
+                        id="bank"
+                        name="bank"
+                        required>
+
+                    <option value="">
+                        Select your bank
+                    </option>
+
+                    <option value="Global IME Bank">
+                        Global IME Bank
+                    </option>
+
+                    <option value="Nabil Bank">
+                        Nabil Bank
+                    </option>
+
+                    <option value="NIC Asia Bank">
+                        NIC Asia Bank
+                    </option>
+
+                    <option value="Nepal Investment Mega Bank">
+                        Nepal Investment Mega Bank
+                    </option>
+
+                    <option value="Himalayan Bank">
+                        Himalayan Bank
+                    </option>
+
+                    <option value="Prabhu Bank">
+                        Prabhu Bank
+                    </option>
+
+                    <option value="Kumari Bank">
+                        Kumari Bank
+                    </option>
+
+                    <option value="Nepal SBI Bank">
+                        Nepal SBI Bank
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- ACCOUNT NUMBER -->
+
+            <div class="form-group">
+
+                <label for="accountNumber">
+                    Account Number
+                </label>
+
+                <input
+                        type="text"
+                        id="accountNumber"
+                        placeholder="Enter account number"
+                        inputmode="numeric"
+                        required>
+
+            </div>
+
+
+            <!-- ACCOUNT HOLDER -->
+
+            <div class="form-group">
+
+                <label for="accountHolder">
+                    Account Holder Name
+                </label>
+
+                <input
+                        type="text"
+                        id="accountHolder"
+                        placeholder="Enter account holder name"
+                        required>
+
+            </div>
+
+
+            <!-- PIN -->
+
+            <div class="form-group">
+
+                <label for="transactionPin">
+                    Transaction PIN
+                </label>
+
+                <input
+                        type="password"
+                        id="transactionPin"
+                        placeholder="Enter 4–6 digit PIN"
+                        maxlength="6"
+                        inputmode="numeric"
+                        required>
+
+            </div>
+
+
+            <!-- SECURITY MESSAGE -->
+
+            <div class="secure-message">
+
+                <i class="fas fa-shield-halved"></i>
+
+                <span>
+                    Your banking information is handled securely.
+                    Never share your PIN with anyone.
+                </span>
+
+            </div>
+
+
+            <!-- PAY BUTTON -->
+
+            <button
+                    type="submit"
+                    class="pay-button">
+
+                <i class="fas fa-lock"></i>
+
+                Pay Now
+
+            </button>
+
+
+            <!-- BACK BUTTON -->
+
+            <a
+                    th:href="@{/cart}"
+                    class="back-cart-button">
+
+                <i class="fas fa-arrow-left"></i>
+
+                Back to Cart
+
+            </a>
+
+        </form>
+
+    </div>
+
+
+    <!-- ORDER SUMMARY -->
+
+    <div class="summary-card">
+
+        <h3>
+            Order Summary
+        </h3>
+
+
+        <div class="summary-row">
+
+            <span>Subtotal</span>
+
+            <span id="subtotal">
+                Rs. 0
+            </span>
+
+        </div>
+
+
+        <div
+                class="summary-row discount-row"
+                id="discountRow">
+
+            <span id="discountLabel">
+                Discount
+            </span>
+
+            <span id="discount">
+                Rs. 0
+            </span>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <h3>Payment Summary</h3>
+
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <span th:text="'Rs. ' + ${#numbers.formatDecimal(cartTotal, 0, 'COMMA', 0, 'POINT')}">
+        </span>
+            </div>
+
+            <div class="summary-row">
+                <span>Shipping</span>
+
+                <span th:if="${shipping == 0}">
+            Free
+        </span>
+
+                <span th:if="${shipping > 0}"
+                      th:text="'Rs. ' + ${#numbers.formatDecimal(shipping, 0, 'COMMA', 0, 'POINT')}">
+        </span>
+            </div>
+
+            <div class="summary-total">
+                <span>Total</span>
+
+                <span th:text="'Rs. ' + ${#numbers.formatDecimal(grandTotal, 0, 'COMMA', 0, 'POINT')}">
+        </span>
+            </div>
+
+        </div>
+
+
+        <div class="payment-selected">
+
+            <span class="selected-title">
+                Payment Method
+            </span>
+
+            <div class="selected-payment">
+
+                <i class="fas fa-building-columns"></i>
+
+                Bank Payment
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- FOOTER -->
+
+<div th:replace="~{fragments :: footer}"></div>
+
+<div th:replace="~{fragments :: mobileMenuScript}"></div>
+
+<div th:replace="~{fragments :: widgets}"></div>
+
+
+<script th:inline="javascript">
+
+    /* ================================
+       CURRENT USER
+       ================================ */
+
+    const CURRENT_USER =
+        /*[[${session.username != null ? session.username : 'guest'}]]*/
+        'guest';
+
+
+    /* ================================
+       COUPONS
+       ================================ */
+
+    const COUPON_TABLE = {
+        SPIN5: 5,
+        SPIN10: 10,
+        SPIN15: 15,
+        SPIN20: 20
+    };
+
+
+    /* ================================
+       FORMAT MONEY
+       ================================ */
+
+    function formatRs(value) {
+
+        return "Rs. " +
+            Number(value || 0)
+                .toLocaleString("en-IN");
+
+    }
+
+
+    /* ================================
+       LOAD ORDER SUMMARY
+       ================================ */
+
+    function loadSummary() {
+
+        /*
+         * Your Cart page stores the subtotal
+         * in the data-value attribute.
+         */
+
+        let subtotal = 0;
+
+        const savedSubtotal =
+            localStorage.getItem("cartSubtotal");
+
+        if (savedSubtotal) {
+
+            subtotal =
+                Number(savedSubtotal);
+
+        }
+
+
+        /*
+         * Try to read cart from localStorage
+         * if available.
+         */
+
+        try {
+
+            const cart =
+                JSON.parse(
+                    localStorage.getItem("cart") || "[]"
+                );
+
+            if (cart.length > 0) {
+
+                subtotal = 0;
+
+                cart.forEach(item => {
+
+                    const price =
+                        Number(item.price || 0);
+
+                    const quantity =
+                        Number(
+                            item.quantity ||
+                            item.qty ||
+                            1
+                        );
+
+                    subtotal +=
+                        price * quantity;
+
+                });
+
+            }
+
+        } catch (error) {
+
+            console.log(
+                "Using saved subtotal."
+            );
+
+        }
+
+
+        /* ================================
+           COUPON
+           ================================ */
+
+        let coupon = null;
+
+        try {
+
+            coupon =
+                localStorage.getItem(
+                    "sw_active_coupon_" +
+                    CURRENT_USER
+                );
+
+            const expiry =
+                Number(
+                    localStorage.getItem(
+                        "sw_coupon_expiry_" +
+                        CURRENT_USER
+                    ) || 0
+                );
+
+            if (
+                coupon &&
+                expiry &&
+                Date.now() > expiry
+            ) {
+
+                coupon = null;
+
+            }
+
+        } catch (error) {
+
+            coupon = null;
+
+        }
+
+
+        let discount = 0;
+
+
+        if (
+            coupon &&
+            COUPON_TABLE[coupon]
+        ) {
+
+            const percent =
+                COUPON_TABLE[coupon];
+
+            discount =
+                Math.round(
+                    subtotal * percent / 100
+                );
+
+            document.getElementById(
+                "discountRow"
+            ).style.display = "flex";
+
+            document.getElementById(
+                "discountLabel"
+            ).textContent =
+                "Coupon (" + coupon + ")";
+
+            document.getElementById(
+                "discount"
+            ).textContent =
+                "- " + formatRs(discount);
+
+            document.getElementById(
+                "couponCode"
+            ).value = coupon;
+
+        }
+
+
+        /* ================================
+           SHIPPING
+           ================================ */
+
+        let shipping = 0;
+
+        if (
+            subtotal > 0 &&
+            subtotal < 3000
+        ) {
+
+            shipping = 150;
+
+        }
+
+
+        /* ================================
+           TOTAL
+           ================================ */
+
+        const total =
+            subtotal -
+            discount +
+            shipping;
+
+
+        /* ================================
+           DISPLAY
+           ================================ */
+
+        document.getElementById(
+            "subtotal"
+        ).textContent =
+            formatRs(subtotal);
+
+
+        document.getElementById(
+            "shipping"
+        ).textContent =
+            shipping === 0
+                ? "Free"
+                : formatRs(shipping);
+
+
+        document.getElementById(
+            "total"
+        ).textContent =
+            formatRs(total);
+
+    }
+
+
+    /* ================================
+       PAYMENT VALIDATION
+       ================================ */
+
+    document
+        .getElementById("bankPaymentForm")
+        .addEventListener(
+            "submit",
+            function(event) {
+
+                const bank =
+                    document.getElementById(
+                        "bank"
+                    ).value;
+
+                const accountNumber =
+                    document.getElementById(
+                        "accountNumber"
+                    ).value.trim();
+
+                const accountHolder =
+                    document.getElementById(
+                        "accountHolder"
+                    ).value.trim();
+
+                const pin =
+                    document.getElementById(
+                        "transactionPin"
+                    ).value.trim();
+
+
+                /* BANK */
+
+                if (!bank) {
+
+                    event.preventDefault();
+
+                    alert(
+                        "Please select your bank."
+                    );
+
+                    return;
+
+                }
+
+
+                /* ACCOUNT NUMBER */
+
+                if (
+                    !/^\d{6,}$/.test(
+                        accountNumber
+                    )
+                ) {
+
+                    event.preventDefault();
+
+                    alert(
+                        "Please enter a valid account number."
+                    );
+
+                    return;
+
+                }
+
+
+                /* ACCOUNT HOLDER */
+
+                if (!accountHolder) {
+
+                    event.preventDefault();
+
+                    alert(
+                        "Please enter account holder name."
+                    );
+
+                    return;
+
+                }
+
+
+                /* PIN */
+
+                if (
+                    !/^\d{4,6}$/.test(pin)
+                ) {
+
+                    event.preventDefault();
+
+                    alert(
+                        "PIN must contain 4–6 digits."
+                    );
+
+                    return;
+
+                }
+
+
+                /*
+                 * IMPORTANT:
+                 * The PIN and account number are
+                 * NOT stored in localStorage.
+                 *
+                 * This is only a demonstration
+                 * payment interface.
+                 */
+
+            }
+        );
+
+
+    /* ================================
+       PAGE LOAD
+       ================================ */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        loadSummary
+    );
+
+</script>
+
+</body>
+</html>

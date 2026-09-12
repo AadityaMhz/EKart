@@ -1,0 +1,555 @@
+/* =========================================================
+   ESEWA PAYMENT PAGE
+   ========================================================= */
+
+.payment-wrap {
+
+    max-width: 1100px;
+
+    margin: 30px auto 60px;
+
+    padding: 0 20px;
+
+    display: grid;
+
+    grid-template-columns:
+    minmax(0, 1.4fr)
+    minmax(300px, 0.8fr);
+
+    gap: 24px;
+
+}
+
+
+/* =========================================================
+   PAYMENT CARD
+   ========================================================= */
+
+.payment-card {
+
+    background: var(--card);
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius-lg);
+
+    padding: 28px;
+
+    box-shadow: var(--shadow-sm);
+
+}
+
+
+.payment-title {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin-bottom: 8px;
+
+}
+
+
+.payment-title i {
+
+    color: #60bb46;
+
+    font-size: 1.5rem;
+
+}
+
+
+.payment-title h2 {
+
+    margin: 0;
+
+    font-size: 1.45rem;
+
+    color: var(--ink);
+
+}
+
+
+.payment-subtitle {
+
+    color: var(--ink-soft);
+
+    font-size: 0.9rem;
+
+    margin: 0 0 22px;
+
+}
+
+
+/* =========================================================
+   SECURITY
+   ========================================================= */
+
+.secure-box {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 13px 15px;
+
+    background: #f1f8f3;
+
+    border: 1px solid #d6ead9;
+
+    border-radius: 10px;
+
+    color: #2e7d32;
+
+    font-size: 0.85rem;
+
+    margin-bottom: 22px;
+
+}
+
+
+.secure-box i {
+
+    font-size: 1.1rem;
+
+}
+
+
+/* =========================================================
+   ESEWA LOGO
+   ========================================================= */
+
+.esewa-logo-box {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin-bottom: 22px;
+
+}
+
+
+.esewa-logo {
+
+    width: 90px;
+
+    height: 90px;
+
+    border-radius: 18px;
+
+    background: #60bb46;
+
+    color: #fff;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 1.25rem;
+
+    font-weight: 800;
+
+    box-shadow:
+            0 6px 18px
+            rgba(96, 187, 70, 0.25);
+
+}
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.payment-form {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 17px;
+
+}
+
+
+.form-group {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+
+}
+
+
+.form-group label {
+
+    font-size: 0.88rem;
+
+    font-weight: 700;
+
+    color: var(--ink);
+
+}
+
+
+.form-group input {
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 12px 14px;
+
+    border: 1.5px solid var(--border);
+
+    border-radius: 10px;
+
+    background: #fff;
+
+    color: var(--ink);
+
+    font-size: 0.92rem;
+
+    outline: none;
+
+    transition: 0.2s ease;
+
+}
+
+
+.form-group input:focus {
+
+    border-color: #60bb46;
+
+    box-shadow:
+            0 0 0 3px
+            rgba(96, 187, 70, 0.10);
+
+}
+
+
+.input-icon {
+
+    position: relative;
+
+}
+
+
+.input-icon i {
+
+    position: absolute;
+
+    left: 14px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: var(--muted);
+
+    font-size: 0.9rem;
+
+}
+
+
+.input-icon input {
+
+    padding-left: 40px;
+
+}
+
+
+.payment-note {
+
+    font-size: 0.76rem;
+
+    color: var(--muted);
+
+    margin-top: -5px;
+
+}
+
+
+/* =========================================================
+   PAY BUTTON
+   ========================================================= */
+
+.pay-btn {
+
+    width: 100%;
+
+    border: none;
+
+    padding: 14px 18px;
+
+    border-radius: 999px;
+
+    background: #60bb46;
+
+    color: #fff;
+
+    font-size: 0.95rem;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+
+    margin-top: 5px;
+
+}
+
+
+.pay-btn:hover {
+
+    background: #4ca837;
+
+    transform: translateY(-1px);
+
+}
+
+
+.pay-btn:disabled {
+
+    opacity: 0.7;
+
+    cursor: not-allowed;
+
+    transform: none;
+
+}
+
+
+/* =========================================================
+   BACK
+   ========================================================= */
+
+.back-cart {
+
+    display: flex;
+
+    justify-content: center;
+
+    margin-top: 16px;
+
+}
+
+
+.back-cart a {
+
+    color: var(--ink-soft);
+
+    text-decoration: none;
+
+    font-size: 0.85rem;
+
+    font-weight: 600;
+
+}
+
+
+.back-cart a:hover {
+
+    color: var(--brand-dark);
+
+}
+
+
+/* =========================================================
+   ORDER SUMMARY
+   ========================================================= */
+
+.order-card {
+
+    background: var(--card);
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius-lg);
+
+    padding: 24px;
+
+    box-shadow: var(--shadow-sm);
+
+    height: fit-content;
+
+    position: sticky;
+
+    top: 90px;
+
+}
+
+
+.order-card h3 {
+
+    margin: 0 0 20px;
+
+    font-size: 1.1rem;
+
+    color: var(--ink);
+
+}
+
+
+.summary-row {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 10px 0;
+
+    font-size: 0.88rem;
+
+    color: var(--ink-soft);
+
+    border-bottom: 1px solid var(--border);
+
+}
+
+
+.summary-total {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding-top: 16px;
+
+    font-size: 1.05rem;
+
+    font-weight: 800;
+
+    color: var(--ink);
+
+}
+
+
+/* =========================================================
+   PAYMENT METHOD
+   ========================================================= */
+
+.payment-method-box {
+
+    margin-top: 20px;
+
+    padding: 13px 14px;
+
+    border-radius: 10px;
+
+    background: #f4fbf1;
+
+    border: 1px solid #dcefd7;
+
+}
+
+
+.payment-method-box .method-label {
+
+    font-size: 0.75rem;
+
+    color: var(--muted);
+
+    margin-bottom: 5px;
+
+}
+
+
+.payment-method-box .method-value {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    color: #3d9d2e;
+
+    font-weight: 800;
+
+    font-size: 0.9rem;
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+    .payment-wrap {
+
+        grid-template-columns: 1fr;
+
+        margin-top: 20px;
+
+    }
+
+
+    .order-card {
+
+        position: static;
+
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .payment-wrap {
+
+        padding: 0 14px;
+
+    }
+
+
+    .payment-card,
+    .order-card {
+
+        padding: 20px;
+
+        border-radius: 14px;
+
+    }
+
+
+    .payment-title h2 {
+
+        font-size: 1.25rem;
+
+    }
+
+
+    .esewa-logo {
+
+        width: 75px;
+
+        height: 75px;
+
+        font-size: 1.05rem;
+
+    }
+
+}

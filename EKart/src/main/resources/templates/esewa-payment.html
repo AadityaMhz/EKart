@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>eSewa Payment — EKart</title>
+
+
+    <!-- Font Awesome -->
+
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+
+
+    <!-- Cart CSS -->
+
+    <link
+            rel="stylesheet"
+            th:href="@{/css/pages/cart.css}"
+    />
+
+
+    <!-- eSewa CSS -->
+
+    <link
+            rel="stylesheet"
+            th:href="@{/css/pages/esewa-payment.css}"
+    />
+
+</head>
+
+
+<body>
+
+
+<!-- HEADER -->
+
+<div th:replace="~{fragments :: header}"></div>
+
+
+<!-- BREADCRUMB -->
+
+<div class="st-breadcrumbs">
+
+    <a th:href="@{/home}">
+        Home
+    </a>
+
+    <span>/</span>
+
+    <a th:href="@{/cart}">
+        Cart
+    </a>
+
+    <span>/</span>
+
+    eSewa Payment
+
+</div>
+
+
+
+<!-- ================= PAYMENT AREA ================= -->
+
+<main class="payment-wrap">
+
+
+    <!-- ================= LEFT ================= -->
+
+    <section class="payment-card">
+
+
+        <div class="payment-title">
+
+            <i class="fas fa-wallet"></i>
+
+            <h2>
+                Pay with eSewa
+            </h2>
+
+        </div>
+
+
+        <p class="payment-subtitle">
+            Complete your payment using your eSewa account.
+        </p>
+
+
+        <!-- SECURITY -->
+
+        <div class="secure-box">
+
+            <i class="fas fa-shield-halved"></i>
+
+            <span>
+        Your payment information is protected and processed securely.
+      </span>
+
+        </div>
+
+
+        <!-- LOGO -->
+
+        <div class="esewa-logo-box">
+
+            <div class="esewa-logo">
+                eSewa
+            </div>
+
+        </div>
+
+
+        <!-- FORM -->
+
+        <form
+                id="esewaForm"
+                class="payment-form">
+
+
+            <!-- MOBILE -->
+
+            <div class="form-group">
+
+                <label for="mobile">
+                    Mobile Number
+                </label>
+
+
+                <div class="input-icon">
+
+                    <i class="fas fa-mobile-screen"></i>
+
+                    <input
+                            type="tel"
+                            id="mobile"
+                            name="mobile"
+                            placeholder="98XXXXXXXX"
+                            maxlength="10"
+                            inputmode="numeric"
+                            required />
+
+                </div>
+
+            </div>
+
+
+            <!-- ESEWA ID -->
+
+            <div class="form-group">
+
+                <label for="esewaId">
+                    eSewa ID
+                </label>
+
+
+                <div class="input-icon">
+
+                    <i class="fas fa-user"></i>
+
+                    <input
+                            type="text"
+                            id="esewaId"
+                            name="esewaId"
+                            placeholder="Enter your eSewa ID"
+                            required />
+
+                </div>
+
+            </div>
+
+
+            <!-- MPIN -->
+
+            <div class="form-group">
+
+                <label for="mpin">
+                    MPIN
+                </label>
+
+
+                <div class="input-icon">
+
+                    <i class="fas fa-lock"></i>
+
+                    <input
+                            type="password"
+                            id="mpin"
+                            name="mpin"
+                            placeholder="Enter MPIN"
+                            maxlength="6"
+                            inputmode="numeric"
+                            required />
+
+                </div>
+
+            </div>
+
+
+            <div class="payment-note">
+
+                Demo payment interface.
+                Do not enter a real eSewa MPIN.
+
+            </div>
+
+
+            <!-- PAY BUTTON -->
+
+            <button
+                    type="submit"
+                    class="pay-btn"
+                    id="payBtn">
+
+                <i class="fas fa-lock"></i>
+
+                Pay Now
+
+            </button>
+
+
+        </form>
+
+
+        <!-- BACK -->
+
+        <div class="back-cart">
+
+            <a th:href="@{/cart}">
+
+                <i class="fas fa-arrow-left"></i>
+
+                Back to Cart
+
+            </a>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- ================= ORDER SUMMARY ================= -->
+
+    <aside class="order-card">
+
+
+        <h3>
+
+            <i class="fas fa-receipt"></i>
+
+            Order Summary
+
+        </h3>
+
+
+        <!-- SUBTOTAL -->
+
+        <div class="summary-row">
+
+      <span>
+        Subtotal
+      </span>
+
+            <span
+                    th:text="'Rs. ' +
+          ${#numbers.formatDecimal(
+          cartTotal,0,'COMMA',0,'POINT')}">
+
+        Rs. 0
+
+      </span>
+
+        </div>
+
+
+        <!-- SHIPPING -->
+
+        <div class="summary-row">
+
+      <span>
+        Shipping
+      </span>
+
+
+            <span
+                    th:if="${shipping == 0}">
+
+        Free
+
+      </span>
+
+
+            <span
+                    th:if="${shipping > 0}"
+                    th:text="'Rs. ' +
+          ${#numbers.formatDecimal(
+          shipping,0,'COMMA',0,'POINT')}">
+
+        Rs. 150
+
+      </span>
+
+        </div>
+
+
+        <!-- TOTAL -->
+
+        <div class="summary-total">
+
+      <span>
+        Total
+      </span>
+
+
+            <span
+                    th:text="'Rs. ' +
+          ${#numbers.formatDecimal(
+          grandTotal,0,'COMMA',0,'POINT')}">
+
+        Rs. 0
+
+      </span>
+
+        </div>
+
+
+        <!-- PAYMENT METHOD -->
+
+        <div class="payment-method-box">
+
+            <div class="method-label">
+
+                Payment Method
+
+            </div>
+
+
+            <div class="method-value">
+
+                <i class="fas fa-wallet"></i>
+
+                <span>
+          eSewa
+        </span>
+
+            </div>
+
+        </div>
+
+
+    </aside>
+
+
+</main>
+
+
+
+<!-- FOOTER -->
+
+<div th:replace="~{fragments :: footer}"></div>
+
+<div th:replace="~{fragments :: mobileMenuScript}"></div>
+
+<div th:replace="~{fragments :: widgets}"></div>
+
+
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+
+    document
+        .getElementById("esewaForm")
+        .addEventListener(
+            "submit",
+            function(event) {
+
+                event.preventDefault();
+
+
+                var mobile =
+                    document.getElementById(
+                        "mobile"
+                    ).value.trim();
+
+
+                var esewaId =
+                    document.getElementById(
+                        "esewaId"
+                    ).value.trim();
+
+
+                var mpin =
+                    document.getElementById(
+                        "mpin"
+                    ).value.trim();
+
+
+                /* MOBILE */
+
+                if (!/^9\d{9}$/.test(mobile)) {
+
+                    alert(
+                        "Please enter a valid 10-digit mobile number."
+                    );
+
+                    return;
+
+                }
+
+
+                /* ESEWA ID */
+
+                if (esewaId.length < 3) {
+
+                    alert(
+                        "Please enter a valid eSewa ID."
+                    );
+
+                    return;
+
+                }
+
+
+                /* MPIN */
+
+                if (!/^\d{4,6}$/.test(mpin)) {
+
+                    alert(
+                        "Please enter a valid 4–6 digit MPIN."
+                    );
+
+                    return;
+
+                }
+
+
+                /* BUTTON */
+
+                var payBtn =
+                    document.getElementById(
+                        "payBtn"
+                    );
+
+
+                payBtn.disabled = true;
+
+
+                payBtn.innerHTML =
+                    '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
+
+                /*
+                 * Demo payment.
+                 *
+                 * MPIN is NOT saved.
+                 */
+
+
+                setTimeout(
+                    function() {
+
+                        /*
+                         * Submit order to Spring Boot.
+                         *
+                         * Shipping address and coupon
+                         * were saved in sessionStorage
+                         * when coming from Cart.
+                         */
+
+                        var form =
+                            document.createElement("form");
+
+                        form.method = "POST";
+
+                        form.action = "/checkout";
+
+
+                        /* SHIPPING ADDRESS */
+
+                        var address =
+                            document.createElement("input");
+
+                        address.type = "hidden";
+
+                        address.name =
+                            "shippingAddress";
+
+                        address.value =
+                            sessionStorage.getItem(
+                                "esewaShippingAddress"
+                            ) || "";
+
+                        form.appendChild(address);
+
+
+                        /* COUPON */
+
+                        var coupon =
+                            document.createElement("input");
+
+                        coupon.type = "hidden";
+
+                        coupon.name =
+                            "couponCode";
+
+                        coupon.value =
+                            sessionStorage.getItem(
+                                "esewaCouponCode"
+                            ) || "";
+
+                        form.appendChild(coupon);
+
+
+                        /* PAYMENT */
+
+                        var payment =
+                            document.createElement("input");
+
+                        payment.type = "hidden";
+
+                        payment.name =
+                            "payment";
+
+                        payment.value =
+                            "eSewa";
+
+                        form.appendChild(payment);
+
+
+                        document.body.appendChild(form);
+
+
+                        form.submit();
+
+
+                    },
+                    1000
+                );
+
+            }
+        );
+
+</script>
+
+
+</body>
+</html>
