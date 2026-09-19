@@ -86,5 +86,10 @@ public class AllController {
         m.addAttribute("selectedCategory", category);
         return "home";
     }
+    @GetMapping("/categories")
+    public String categories(Model m) {
+        m.addAttribute("categories", categoryRepo.findAll());
+        return "categories";
+    }
 
 }

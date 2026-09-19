@@ -1,0 +1,17 @@
+$kind: http-request
+name: Checkout
+method: POST
+url: '{{baseUrl}}/checkout'
+order: 3000
+body:
+  type: urlencoded
+  content:
+    - key: shippingAddress
+      value: '123 Main St, Kathmandu'
+      description: Delivery address
+    - key: couponCode
+      value: SPIN10
+      description: 'Optional coupon code (SPIN5, SPIN10, SPIN15, SPIN20)'
+    - key: payment
+      value: Cash on Delivery
+      description: 'Payment method (e.g. Cash on Delivery, Bank Transfer, eSewa)'

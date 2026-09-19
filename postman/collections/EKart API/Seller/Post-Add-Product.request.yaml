@@ -1,0 +1,40 @@
+$kind: http-request
+name: Add Product
+method: POST
+url: '{{baseUrl}}/seller/product/add'
+order: 2000
+body:
+  type: formdata
+  content:
+    - key: name
+      type: text
+      value: New Product
+      description: Product name
+    - key: description
+      type: text
+      value: A great product description.
+      description: Product description
+    - key: price
+      type: text
+      value: '999'
+      description: Product price in Rs.
+    - key: oldPrice
+      type: text
+      value: '1299'
+      description: Original price before discount (optional)
+    - key: stock
+      type: text
+      value: '50'
+      description: Available stock quantity
+    - key: categoryId
+      type: text
+      value: '1'
+      description: ID of the product category
+    - key: badge
+      type: text
+      value: New
+      description: 'Product badge label (optional, e.g. New, Sale, Hot)'
+    - key: image
+      type: file
+      src: ''
+      description: Product image file (optional)

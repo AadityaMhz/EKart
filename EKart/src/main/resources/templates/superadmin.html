@@ -36,10 +36,10 @@
         <header class="admin-header">
             <button class="sidebar-toggle" id="sidebarToggle"><i class="fas fa-bars"></i></button>
             <h1 id="pageTitle">Super Admin Dashboard</h1>
-            <div class="user-menu">
-                <span th:text="${admin.username}"></span>
-                <span class="super-admin-badge">Super Admin</span>
-            </div>
+<!--            <div class="user-menu">-->
+<!--                <span th:text="${admin.username}"></span>-->
+<!--                <span class="super-admin-badge">Super Admin</span>-->
+<!--            </div>-->
         </header>
 
         <!-- Dashboard Section -->
@@ -103,7 +103,7 @@
                             <td>
                                 <form th:action="@{/superadmin/seller/approve}" method="post" style="display:inline;">
                                     <input type="hidden" name="userId" th:value="${u.id}" />
-                                    <button type="submit" class="action-btn" title="Approve"><i class="fas fa-check" style="color:#2e7d32;"></i></button>
+                                    <button type="submit" class="action-btn approve-btn" title="Approve"><i class="fas fa-check"></i></button>
                                 </form>
                                 <form th:action="@{/superadmin/seller/reject}" method="post" style="display:inline;">
                                     <input type="hidden" name="userId" th:value="${u.id}" />
@@ -204,7 +204,5 @@
   window.EKART_USER = /*[[${session.username != null ? session.username : 'guest'}]]*/ 'guest';
   /*]]>*/
 </script>
-<script th:src="@{/js/chatbot.js}"></script>
-<script th:src="@{/js/spin-wheel.js}"></script>
 </body>
 </html>

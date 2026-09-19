@@ -1,0 +1,9 @@
+$kind: http-request
+name: Get Home - Filter by Category
+method: GET
+url: '{{baseUrl}}/home?category=Footwear'
+order: 4000
+queryParams:
+  - key: category
+    value: Footwear
+    description: Category name to filter products

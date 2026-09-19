@@ -1,0 +1,14 @@
+$kind: http-request
+name: Update Order Status
+method: POST
+url: '{{baseUrl}}/superadmin/order/status'
+order: 6000
+body:
+  type: urlencoded
+  content:
+    - key: orderId
+      value: '1'
+      description: ID of the order to update
+    - key: status
+      value: SHIPPED
+      description: 'New order status (e.g. PLACED, SHIPPED, DELIVERED, CANCELLED)'

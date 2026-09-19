@@ -20,6 +20,10 @@
     <p><span>Order ID</span><span th:text="'ORD' + ${order.id}"></span></p>
     <p><span>Order Date</span><span th:text="${#temporals.format(order.orderDate, 'MMMM d, yyyy')}"></span></p>
     <p><span>Shipping To</span><span th:text="${order.shippingAddress}"></span></p>
+    <p>
+      <span>Payment Method</span>
+      <span th:text="${order.paymentMethod}"></span>
+    </p>
     <p><span>Status</span><span th:text="${order.status}"></span></p>
     <p th:if="${order.couponCode != null}"><span>Coupon Applied</span><span th:text="${order.couponCode} + ' (− Rs. ' + ${#numbers.formatDecimal(order.discountAmount,0,'COMMA',0,'POINT')} + ')'"></span></p>
     <h3 style="margin-top:16px;">Items</h3>

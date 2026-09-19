@@ -1,0 +1,5 @@
+$kind: http-request
+name: Get Signup Form
+method: GET
+url: '{{baseUrl}}/signup'
+order: 1000

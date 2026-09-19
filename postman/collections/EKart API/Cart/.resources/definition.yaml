@@ -1,0 +1,3 @@
+$kind: collection
+name: Cart
+description: Shopping cart operations — view cart, add items, update quantities, remove items, and retrieve product images.

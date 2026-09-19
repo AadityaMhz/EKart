@@ -90,17 +90,17 @@ public class DataInitializer implements CommandLineRunner {
             seed("Pro Football Boots", 10000, null, "Sports", "boot.jpg", null, null, 4.5, 76, "Firm-ground football boots with a molded stud pattern for explosive acceleration and sharp turns.", categories);
             seed("Aviator Sunglasses", 4000, 4800, "Accessories", "glass.jpg", null, "SALE", 4.2, 54, "Timeless aviator frames with UV400-protected polarized lenses and a lightweight metal build.", categories);
             seed("Men's Windbreaker Jacket", 2000, null, "Men", "jacket.jpg", null, "NEW", 4.4, 41, "A packable, water-resistant windbreaker built for unpredictable weather without weighing you down.", categories);
-            seed("Comfort Slide Sandals", 1200, 1600, "Footwear", "sabal.jpg", null, "SALE", 4.1, 63, "Soft cushioned footbed sandals designed for all-day comfort, indoors or out.", categories);
-            seed("Summer Breeze Tee", 900, null, "Women", "summer.jpg", null, null, 4.0, 22, "A breathable cotton tee cut for warm-weather layering, available in soft summer tones.", categories);
+            seed("Comfort Slide Sandals", 1200, 1600, "Footwear", "slide sandles.jpg", null, "SALE", 4.1, 63, "Soft cushioned footbed sandals designed for all-day comfort, indoors or out.", categories);
+            seed("Summer Breeze Tee", 900, null, "Women", "tee.jpg", null, null, 4.0, 22, "A breathable cotton tee cut for warm-weather layering, available in soft summer tones.", categories);
             seed("Summer Vibes Tee — Coral", 950, null, "Women", "summer 1.jpg", null, "NEW", 4.3, 18, "Lightweight relaxed-fit tee with a sun-faded coral wash, perfect for beach days.", categories);
             seed("Summer Vibes Tee — Ocean", 950, null, "Men", "summer 2.jpg", null, null, 4.2, 15, "Breathable everyday tee in an ocean-blue wash, made from soft combed cotton.", categories);
-            seed("New Arrivals Hoodie", 2800, null, "Men", "New arrivals.jpg", null, "NEW", 4.5, 33, "Heavyweight fleece hoodie with a relaxed fit - this season's most-requested layer.", categories);
-            seed("Street Style Hoodie", 2600, null, "Women", "arrivals.jpg", null, "NEW", 4.4, 27, "Oversized streetwear hoodie with a soft brushed interior for everyday comfort.", categories);
+            seed("New Arrivals Hoodie", 2800, null, "Men", "hoodie.jpg", null, "NEW", 4.5, 33, "Heavyweight fleece hoodie with a relaxed fit - this season's most-requested layer.", categories);
+            seed("Street Style Hoodie", 2600, null, "Women", "hoodie 2.jpg", null, "NEW", 4.4, 27, "Oversized streetwear hoodie with a soft brushed interior for everyday comfort.", categories);
 
-            seed("Wireless Earbuds Pro", 3500, 4200, "Electronics", null, "fa-headphones", "SALE", 4.6, 204, "True wireless earbuds with active noise cancellation and 28-hour total playtime.", categories);
-            seed("Fast Charge Power Bank 20K", 1800, null, "Electronics", null, "fa-mobile-screen", null, 4.3, 97, "20,000mAh power bank with dual fast-charge ports to keep every device topped up on the go.", categories);
+            seed("Wireless Earbuds Pro", 3500, 4200, "Electronics", "airpod.jpg", null, "SALE", 4.6, 204, "True wireless earbuds with active noise cancellation and 28-hour total playtime.", categories);
+            seed("Fast Charge Power Bank 20K", 1800, null, "Electronics", "power.jpg", null, null, 4.3, 97, "20,000mAh power bank with dual fast-charge ports to keep every device topped up on the go.", categories);
             seed("Kids Cotton T-Shirt Set", 850, null, "Kids", null, "fa-shirt", "NEW", 4.5, 31, "A 3-pack of soft, breathable cotton tees sized for active kids.", categories);
-            seed("Baby Soft Onesie", 650, null, "Kids", null, "fa-baby", null, 4.7, 58, "Gentle organic-cotton onesie designed for sensitive skin and easy diaper changes.", categories);
+            seed("White Socks", 650, null, "Kids", "scoks.jpg", null, null, 4.7, 58, "High Quality Comfortable Socks.", categories);
             seed("Toddler Ride-On Tricycle", 4200, 5000, "Kids", null, "fa-bicycle", "SALE", 4.4, 46, "A sturdy, adjustable tricycle with a parent push-handle for early rides.", categories);
             seed("Fitness Dumbbell Set 10kg", 3200, null, "Sports", null, "fa-dumbbell", null, 4.6, 71, "Adjustable rubber-coated dumbbell pair built for home strength training.", categories);
             seed("Yoga & Gym Duffel Bag", 1400, null, "Sports", null, "fa-bag-shopping", "NEW", 4.2, 19, "Water-resistant duffel with a dedicated shoe compartment for gym or travel.", categories);

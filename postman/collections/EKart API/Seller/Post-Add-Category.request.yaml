@@ -1,0 +1,14 @@
+$kind: http-request
+name: Add Category
+method: POST
+url: '{{baseUrl}}/seller/category/add'
+order: 5000
+body:
+  type: urlencoded
+  content:
+    - key: name
+      value: Electronics
+      description: Name of the new category
+    - key: icon
+      value: fa-laptop
+      description: Font Awesome icon class for the category (optional)

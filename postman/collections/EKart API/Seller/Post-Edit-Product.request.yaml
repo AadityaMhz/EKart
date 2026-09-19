@@ -1,0 +1,44 @@
+$kind: http-request
+name: Edit Product
+method: POST
+url: '{{baseUrl}}/seller/product/edit'
+order: 3000
+body:
+  type: formdata
+  content:
+    - key: id
+      type: text
+      value: '1'
+      description: ID of the product to edit
+    - key: name
+      type: text
+      value: Updated Product Name
+      description: Updated product name
+    - key: description
+      type: text
+      value: Updated product description.
+      description: Updated product description
+    - key: price
+      type: text
+      value: '899'
+      description: Updated price in Rs.
+    - key: oldPrice
+      type: text
+      value: '999'
+      description: Updated original price (optional)
+    - key: stock
+      type: text
+      value: '45'
+      description: Updated stock quantity
+    - key: categoryId
+      type: text
+      value: '1'
+      description: Updated category ID
+    - key: badge
+      type: text
+      value: Sale
+      description: Updated badge label (optional)
+    - key: image
+      type: file
+      src: ''
+      description: Replacement image file (optional)

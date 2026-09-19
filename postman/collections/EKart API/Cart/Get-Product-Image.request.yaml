@@ -1,0 +1,9 @@
+$kind: http-request
+name: Get Product Image
+method: GET
+url: '{{baseUrl}}/product-image/{{productId}}'
+order: 2000
+pathVariables:
+  - key: productId
+    value: '1'
+    description: The ID of the product whose image to retrieve

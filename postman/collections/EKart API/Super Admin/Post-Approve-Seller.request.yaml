@@ -1,0 +1,11 @@
+$kind: http-request
+name: Approve Seller Application
+method: POST
+url: '{{baseUrl}}/superadmin/seller/approve'
+order: 2000
+body:
+  type: urlencoded
+  content:
+    - key: userId
+      value: '2'
+      description: ID of the user to approve as a seller

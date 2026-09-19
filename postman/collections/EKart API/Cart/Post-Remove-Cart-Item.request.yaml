@@ -1,0 +1,11 @@
+$kind: http-request
+name: Remove Cart Item
+method: POST
+url: '{{baseUrl}}/cart/remove'
+order: 5000
+body:
+  type: urlencoded
+  content:
+    - key: itemId
+      value: '1'
+      description: ID of the cart item to remove

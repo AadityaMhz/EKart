@@ -1,0 +1,9 @@
+$kind: http-request
+name: Get Product Details
+method: GET
+url: '{{baseUrl}}/product/{{productId}}'
+order: 1000
+pathVariables:
+  - key: productId
+    value: '1'
+    description: The ID of the product

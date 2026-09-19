@@ -1,0 +1,20 @@
+$kind: http-request
+name: Send Contact Message
+method: POST
+url: '{{baseUrl}}/contact'
+order: 7000
+body:
+  type: urlencoded
+  content:
+    - key: name
+      value: John Doe
+      description: Sender's full name
+    - key: email
+      value: john@example.com
+      description: Sender's email address
+    - key: subject
+      value: Order Inquiry
+      description: Subject of the message
+    - key: message
+      value: I have a question about my recent order.
+      description: Message body

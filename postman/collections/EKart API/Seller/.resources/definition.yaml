@@ -1,0 +1,3 @@
+$kind: collection
+name: Seller
+description: 'Seller dashboard and product/category management. Requires SELLER role. Base path: /seller'

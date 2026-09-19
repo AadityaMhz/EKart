@@ -1,0 +1,11 @@
+$kind: http-request
+name: Apply to Become Seller
+method: POST
+url: '{{baseUrl}}/become-seller'
+order: 4000
+body:
+  type: urlencoded
+  content:
+    - key: businessName
+      value: My Shop
+      description: Name of the seller's business

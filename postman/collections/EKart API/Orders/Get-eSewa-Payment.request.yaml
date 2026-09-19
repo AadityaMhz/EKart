@@ -1,0 +1,5 @@
+$kind: http-request
+name: Get eSewa Payment Page
+method: GET
+url: '{{baseUrl}}/esewa-payment'
+order: 2000

@@ -1,0 +1,11 @@
+$kind: http-request
+name: Delete User
+method: POST
+url: '{{baseUrl}}/superadmin/user/delete'
+order: 4000
+body:
+  type: urlencoded
+  content:
+    - key: userId
+      value: '3'
+      description: ID of the user to delete (cannot delete yourself)

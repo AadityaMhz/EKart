@@ -1,0 +1,3 @@
+$kind: collection
+name: Public
+description: Public-facing pages — landing, home (with search/filter), about, contact, and categories. No authentication required.

@@ -10,23 +10,24 @@
 <body>
 <div th:replace="~{fragments :: header}"></div>
 
-<section class="st-section">
-  <div class="st-section-head">
-    <div>
-      <h2 th:if="${search != null and !search.isEmpty()}" th:text="'Results for &quot;' + ${search} + '&quot;'"></h2>
-      <h2 th:if="${search == null or search.isEmpty()}">Shop by Category</h2>
-    </div>
-  </div>
-  <div class="st-cat-grid">
-    <a th:each="c : ${categories}" th:href="@{/home(category=${c.name})}" class="st-cat-card"
-       th:classappend="${selectedCategory != null and selectedCategory == c.name} ? ' active' : ''">
-      <div class="st-cat-icon"><i class="fas" th:classappend="${c.icon}"></i></div>
-      <span th:text="${c.name}"></span>
-    </a>
-    <a th:href="@{/home}" class="st-cat-card"><div class="st-cat-icon"><i class="fas fa-border-all"></i></div><span>All</span></a>
-    <p th:if="${#lists.isEmpty(categories)}">No categories yet.</p>
-  </div>
-</section>
+<!--<section class="st-section">-->
+<!--  <div class="st-section-head">-->
+<!--    <div>-->
+<!--      <h2 th:if="${search != null and !search.isEmpty()}" th:text="'Results for &quot;' + ${search} + '&quot;'"></h2>-->
+<!--      <h2 th:if="${search == null or search.isEmpty()}">All Products</h2>-->
+<!--      <p th:text="${#lists.size(products)} + ' item(s)'"></p>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  <div class="st-product-grid">-->
+<!--    <a th:each="c : ${categories}" th:href="@{/home(category=${c.name})}" class="st-cat-card"-->
+<!--       th:classappend="${selectedCategory != null and selectedCategory == c.name} ? ' active' : ''">-->
+<!--      <div class="st-cat-icon"><i class="fas" th:classappend="${c.icon}"></i></div>-->
+<!--      <span th:text="${c.name}"></span>-->
+<!--    </a>-->
+<!--    <a th:href="@{/home}" class="st-cat-card"><div class="st-cat-icon"><i class="fas fa-border-all"></i></div><span>All</span></a>-->
+<!--    <p th:if="${#lists.isEmpty(categories)}">No categories yet.</p>-->
+<!--  </div>-->
+<!--</section>-->
 
 <section class="st-section">
   <div class="st-section-head">

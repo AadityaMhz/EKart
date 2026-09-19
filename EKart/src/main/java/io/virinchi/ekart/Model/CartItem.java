@@ -3,7 +3,7 @@ package io.virinchi.ekart.Model;
 import jakarta.persistence.*;
 import lombok.Data;
 
-//One row per (user, product) pair in a shopper's cart - cart.html
+// One row per (user, product, color) combination in a shopper's cart.
 @Entity
 @Data
 public class CartItem {
@@ -22,4 +22,7 @@ public class CartItem {
 
     private int quantity;
 
+    // Selected product color
+    @Column(nullable = true)
+    private String color;
 }

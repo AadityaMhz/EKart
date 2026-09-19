@@ -1,0 +1,17 @@
+$kind: http-request
+name: Update Profile
+method: POST
+url: '{{baseUrl}}/profile/update'
+order: 2000
+body:
+  type: urlencoded
+  content:
+    - key: fullName
+      value: Test User Updated
+      description: Updated full name
+    - key: phone
+      value: '9800000001'
+      description: Updated phone number
+    - key: address
+      value: '456 Park Ave, Pokhara'
+      description: Updated delivery address

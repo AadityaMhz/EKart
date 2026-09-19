@@ -1,0 +1,9 @@
+$kind: http-request
+name: Get Order Confirmation
+method: GET
+url: '{{baseUrl}}/order/confirm/{{orderId}}'
+order: 4000
+pathVariables:
+  - key: orderId
+    value: '1'
+    description: The ID of the confirmed order

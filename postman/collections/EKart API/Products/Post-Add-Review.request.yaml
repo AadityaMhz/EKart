@@ -1,0 +1,18 @@
+$kind: http-request
+name: Add Product Review
+method: POST
+url: '{{baseUrl}}/product/{{productId}}/review'
+order: 2000
+pathVariables:
+  - key: productId
+    value: '1'
+    description: The ID of the product to review
+body:
+  type: urlencoded
+  content:
+    - key: rating
+      value: '5'
+      description: Star rating from 1 to 5
+    - key: comment
+      value: Great product! Highly recommended.
+      description: Written review text

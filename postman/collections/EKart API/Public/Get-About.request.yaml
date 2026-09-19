@@ -1,0 +1,5 @@
+$kind: http-request
+name: Get About
+method: GET
+url: '{{baseUrl}}/about'
+order: 5000

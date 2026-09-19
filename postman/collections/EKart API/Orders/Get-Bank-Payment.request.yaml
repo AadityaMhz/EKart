@@ -1,0 +1,5 @@
+$kind: http-request
+name: Get Bank Payment Page
+method: GET
+url: '{{baseUrl}}/bank-payment'
+order: 1000

@@ -22,13 +22,13 @@
       <a th:href="@{/home}" class="st-logo"><img th:src="@{/image/ecommlogo2.jpg}" alt="Logo" /></a>
       <nav class="st-nav-links desktop-only">
         <a th:href="@{/home}" class="st-nav-link">Home</a>
-        <a th:href="@{/home}" class="st-nav-link">Categories</a>
+        <a th:href="@{/categories}" class="st-nav-link">Categories</a>
         <a th:href="@{/about}" class="st-nav-link">About</a>
         <a th:href="@{/contact}" class="st-nav-link">Contact</a>
         <a th:href="@{/become-seller}" class="st-nav-link">Sell With Us</a>
       </nav>
       <div class="st-search-wrap desktop-only">
-        <form th:action="@{/home}" method="get" style="display:flex;align-items:center;width:100%;">
+        <form th:action="@{/home}" method="get" style="">
           <i class="fas fa-search"></i>
           <input type="text" name="search" placeholder="Search products..." autocomplete="off" />
         </form>
@@ -41,7 +41,7 @@
       </div>
     </div>
     <div class="st-search-wrap mobile-only st-search-wrap-mobile">
-      <form th:action="@{/home}" method="get" style="display:flex;align-items:center;width:100%;">
+      <form th:action="@{/home}" method="get" style="">
         <i class="fas fa-search"></i>
         <input type="text" name="search" placeholder="Search products..." autocomplete="off" />
       </form>

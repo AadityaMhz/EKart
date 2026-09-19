@@ -1,0 +1,9 @@
+$kind: http-request
+name: Get Home - Search Products
+method: GET
+url: '{{baseUrl}}/home?search=shoes'
+order: 3000
+queryParams:
+  - key: search
+    value: shoes
+    description: Search term to filter products by name

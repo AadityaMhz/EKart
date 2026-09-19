@@ -1,0 +1,17 @@
+$kind: http-request
+name: Add to Cart
+method: POST
+url: '{{baseUrl}}/cart/add'
+order: 3000
+body:
+  type: urlencoded
+  content:
+    - key: productId
+      value: '1'
+      description: ID of the product to add
+    - key: quantity
+      value: '1'
+      description: Quantity to add (defaults to 1)
+    - key: color
+      value: Black
+      description: 'Color selection (footwear only, optional)'

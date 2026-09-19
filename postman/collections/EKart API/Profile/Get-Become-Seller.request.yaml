@@ -1,0 +1,5 @@
+$kind: http-request
+name: Get Become Seller Form
+method: GET
+url: '{{baseUrl}}/become-seller'
+order: 3000

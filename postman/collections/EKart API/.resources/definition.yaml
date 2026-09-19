@@ -1,0 +1,3 @@
+$kind: collection
+name: EKart API
+description: 'Complete API collection for the EKart Spring Boot e-commerce application. Covers all controllers: Public pages, Auth, Cart, Orders, Products, Profile, Seller, and Super Admin.'

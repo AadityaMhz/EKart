@@ -1,0 +1,14 @@
+$kind: http-request
+name: Update Cart Quantity
+method: POST
+url: '{{baseUrl}}/cart/update'
+order: 4000
+body:
+  type: urlencoded
+  content:
+    - key: itemId
+      value: '1'
+      description: ID of the cart item to update
+    - key: quantity
+      value: '2'
+      description: New quantity (set to 0 to remove the item)

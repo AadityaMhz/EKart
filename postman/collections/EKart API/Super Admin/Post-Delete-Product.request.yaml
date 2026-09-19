@@ -1,0 +1,11 @@
+$kind: http-request
+name: Delete Product (Admin)
+method: POST
+url: '{{baseUrl}}/superadmin/product/delete'
+order: 5000
+body:
+  type: urlencoded
+  content:
+    - key: productId
+      value: '1'
+      description: ID of the product to soft-delete

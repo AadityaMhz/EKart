@@ -1,0 +1,3 @@
+$kind: collection
+name: Super Admin
+description: 'Platform-wide control panel. Requires SUPERADMIN role. Base path: /superadmin'

@@ -1,0 +1,5 @@
+$kind: http-request
+name: View Profile
+method: GET
+url: '{{baseUrl}}/profile'
+order: 1000

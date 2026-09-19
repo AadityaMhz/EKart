@@ -1,0 +1,5 @@
+$kind: http-request
+name: Get Login Form
+method: GET
+url: '{{baseUrl}}/login'
+order: 3000

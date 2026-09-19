@@ -10,29 +10,43 @@
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
-  <link rel="stylesheet" th:href="@{/css/pages/cart.css}" />
+  <link rel="stylesheet"
+        th:href="@{/css/pages/cart.css}" />
 </head>
 
 <body>
 
-<!-- HEADER -->
+<!-- ================= HEADER ================= -->
+
 <div th:replace="~{fragments :: header}"></div>
 
-<!-- BREADCRUMB -->
+
+<!-- ================= BREADCRUMB ================= -->
+
 <div class="st-breadcrumbs">
-  <a th:href="@{/home}">Home</a>
+
+  <a th:href="@{/home}">
+    Home
+  </a>
+
   <span>/</span>
+
   Cart
+
 </div>
 
 
 <div class="cart-wrap">
 
+
   <!-- ================= LEFT SIDE ================= -->
 
   <div>
 
-    <h2 style="margin:6px 0 14px;">Your Cart</h2>
+    <h2 style="margin:6px 0 14px;">
+      Your Cart
+    </h2>
+
 
     <p style="color:red;font-weight:600;"
        th:if="${error}"
@@ -42,14 +56,17 @@
 
     <div class="cart-items">
 
-      <!-- EMPTY CART -->
+
+      <!-- ================= EMPTY CART ================= -->
 
       <div class="cart-empty"
            th:if="${#lists.isEmpty(cartItems)}">
 
         <i class="fas fa-cart-shopping"></i>
 
-        <p>Your cart is empty.</p>
+        <p>
+          Your cart is empty.
+        </p>
 
         <a th:href="@{/home}"
            class="add-cart-btn"
@@ -57,43 +74,119 @@
                   padding:10px 22px;
                   border-radius:999px;
                   display:inline-block;">
+
           Start Shopping
+
         </a>
 
       </div>
 
 
-      <!-- CART ITEMS -->
+      <!-- ================= CART ITEMS ================= -->
 
       <div class="cart-row"
-           th:each="item : ${cartItems}">
+           th:each="item : ${cartItems}"
+           th:with="isFootwear=${item.product.category != null
+                                 and item.product.category.name != null
+                                 and #strings.equalsIgnoreCase(
+                                       item.product.category.name,
+                                       'Footwear')},
+                    hasColor=${item.color != null
+                               and item.color != ''}">
+
+
+        <!-- ================= PRODUCT IMAGE ================= -->
 
         <div class="cart-thumb">
 
-          <img th:if="${item.product.image != null}"
-               th:src="'data:image/jpeg;base64,' + ${item.product.image}"
-               th:alt="${item.product.name}" />
 
-          <i th:unless="${item.product.image != null}"
+          <!-- ================================================= -->
+          <!-- FOOTWEAR WITH A SELECTED COLOUR -->
+          <!-- ================================================= -->
+
+          <img th:if="${isFootwear and hasColor}"
+               th:src="${item.color == 'Black'
+                         ? '/image/black shoe.jpg'
+                         : (item.color == 'White'
+                            ? '/images/products/shoe-white.jpg'
+                            : (item.color == 'Red'
+                               ? '/image/shoes.jpg'
+                               : (item.color == 'Blue'
+                                  ? '/images/products/shoes.jpg'
+                                  : '/product-image/' + item.product.id)))}"
+               th:alt="${item.product.name + ' - ' + item.color}"
+               class="cart-product-image" />
+
+
+          <!-- ================================================= -->
+          <!-- ALL OTHER PRODUCTS THAT HAVE AN IMAGE -->
+          <!-- ================================================= -->
+
+          <img th:if="${!isFootwear
+                       and item.product.image != null
+                       and item.product.image != ''}"
+               th:src="@{/product-image/{id}(id=${item.product.id})}"
+               th:alt="${item.product.name}"
+               class="cart-product-image" />
+
+
+          <!-- ================================================= -->
+          <!-- FALLBACK ICON -->
+          <!-- ================================================= -->
+
+          <i th:if="${(isFootwear and !hasColor)
+                      or (!isFootwear
+                          and (item.product.image == null
+                               or item.product.image == ''))}"
              class="fas"
-             th:classappend="${item.product.icon != null ? item.product.icon : 'fa-box'}">
+             th:classappend="${item.product.icon != null
+                              ? item.product.icon
+                              : (isFootwear
+                                 ? 'fa-shoe-prints'
+                                 : 'fa-box')}">
           </i>
 
         </div>
 
 
+        <!-- ================= PRODUCT INFORMATION ================= -->
+
         <div class="cart-meta">
 
-          <h4 th:text="${item.product.name}"></h4>
+
+          <!-- PRODUCT NAME -->
+
+          <h4 th:text="${item.product.name}">
+            Product Name
+          </h4>
+
+
+          <!-- ================================================= -->
+          <!-- COLOR - FOOTWEAR ONLY -->
+          <!-- ================================================= -->
+
+          <span class="cart-color"
+                th:if="${isFootwear and hasColor}"
+                th:text="'Color: ' + ${item.color}">
+
+            Color: Black
+
+          </span>
+
+
+          <!-- PRICE -->
 
           <span class="cart-price"
                 th:text="'Rs. ' + ${#numbers.formatDecimal(item.product.price,0,'COMMA',0,'POINT')}">
+
+            Rs. 0
+
           </span>
 
         </div>
 
 
-        <!-- QUANTITY -->
+        <!-- ================= QUANTITY ================= -->
 
         <form th:action="@{/cart/update}"
               method="post"
@@ -103,24 +196,33 @@
                  name="itemId"
                  th:value="${item.id}" />
 
+
           <button type="submit"
                   name="quantity"
                   th:value="${item.quantity - 1}">
+
             −
+
           </button>
 
-          <span th:text="${item.quantity}"></span>
+
+          <span th:text="${item.quantity}">
+            1
+          </span>
+
 
           <button type="submit"
                   name="quantity"
                   th:value="${item.quantity + 1}">
+
             +
+
           </button>
 
         </form>
 
 
-        <!-- REMOVE -->
+        <!-- ================= REMOVE ================= -->
 
         <form th:action="@{/cart/remove}"
               method="post">
@@ -138,6 +240,7 @@
 
         </form>
 
+
       </div>
 
     </div>
@@ -149,14 +252,18 @@
 
   <div class="summary-card">
 
-    <h3>Order Summary</h3>
+    <h3>
+      Order Summary
+    </h3>
 
 
-    <!-- SUBTOTAL -->
+    <!-- ================= SUBTOTAL ================= -->
 
     <div class="summary-row">
 
-      <span>Subtotal</span>
+      <span>
+        Subtotal
+      </span>
 
       <span id="cartSubtotal"
             th:text="'Rs. ' + ${#numbers.formatDecimal(cartTotal,0,'COMMA',0,'POINT')}"
@@ -166,7 +273,7 @@
     </div>
 
 
-    <!-- COUPON -->
+    <!-- ================= COUPON ================= -->
 
     <div class="summary-row"
          id="couponRow"
@@ -176,16 +283,19 @@
         Coupon
       </span>
 
-      <span id="couponAmount"></span>
+      <span id="couponAmount">
+      </span>
 
     </div>
 
 
-    <!-- SHIPPING -->
+    <!-- ================= SHIPPING ================= -->
 
     <div class="summary-row">
 
-      <span>Shipping</span>
+      <span>
+        Shipping
+      </span>
 
       <span th:text="${cartTotal >= 3000 or cartTotal == 0}
                     ? 'Free'
@@ -195,11 +305,13 @@
     </div>
 
 
-    <!-- TOTAL -->
+    <!-- ================= TOTAL ================= -->
 
     <div class="summary-total">
 
-      <span>Total</span>
+      <span>
+        Total
+      </span>
 
       <span id="cartGrandTotal"
             th:text="'Rs. ' + ${#numbers.formatDecimal(
@@ -214,7 +326,7 @@
     </div>
 
 
-    <!-- ================= CHECKOUT FORM ================= -->
+    <!-- ================= CHECKOUT ================= -->
 
     <form th:action="@{/checkout}"
           method="post"
@@ -293,15 +405,14 @@
       </div>
 
 
-      <button
-              type="submit"
+      <button type="submit"
               class="checkout-btn"
               style="display:block;
-                 width:100%;
-                 text-align:center;
-                 padding:13px;
-                 border-radius:999px !important;
-                 margin-top:14px;">
+                     width:100%;
+                     text-align:center;
+                     padding:13px;
+                     border-radius:999px !important;
+                     margin-top:14px;">
 
         Proceed to Checkout
 
@@ -324,14 +435,19 @@
             /*[[${session.username != null ? session.username : 'guest'}]]*/
             'guest';
 
+
     var COUPON_TABLE = {
+
       SPIN5: 5,
       SPIN10: 10,
       SPIN15: 15,
       SPIN20: 20
+
     };
 
+
     var code = null;
+
 
     try {
 
@@ -339,14 +455,18 @@
               "sw_active_coupon_" + CURRENT_USER
       );
 
+
       var expiry = Number(
               localStorage.getItem(
                       "sw_coupon_expiry_" + CURRENT_USER
               ) || 0
       );
 
+
       if (code && expiry && Date.now() > expiry) {
+
         code = null;
+
       }
 
     } catch (e) {
@@ -357,7 +477,9 @@
 
 
     if (!code || !COUPON_TABLE[code]) {
+
       return;
+
     }
 
 
@@ -366,7 +488,9 @@
 
 
     if (!subtotalEl) {
+
       return;
+
     }
 
 
@@ -377,7 +501,9 @@
 
 
     if (subtotal <= 0) {
+
       return;
+
     }
 
 
@@ -386,7 +512,9 @@
 
 
     var discount =
-            Math.round(subtotal * percent / 100);
+            Math.round(
+                    subtotal * percent / 100
+            );
 
 
     var shipping =
@@ -444,7 +572,9 @@
 
 
             if (!checkoutForm) {
+
               return;
+
             }
 
 
@@ -459,7 +589,9 @@
 
 
                       if (!selectedPayment) {
+
                         return;
+
                       }
 
 
@@ -490,7 +622,9 @@
 
                       /* ================= BANK ================= */
 
-                      if (selectedPayment.value === "Bank") {
+                      if (
+                              selectedPayment.value === "Bank"
+                      ) {
 
                         event.preventDefault();
 
@@ -510,6 +644,7 @@
                         window.location.href =
                                 "/bank-payment";
 
+
                         return;
 
                       }
@@ -517,7 +652,9 @@
 
                       /* ================= ESEWA ================= */
 
-                      if (selectedPayment.value === "eSewa") {
+                      if (
+                              selectedPayment.value === "eSewa"
+                      ) {
 
                         event.preventDefault();
 
@@ -537,28 +674,30 @@
                         window.location.href =
                                 "/esewa-payment";
 
+
                         return;
 
                       }
 
 
                       /*
-                       * Cash on Delivery
+                       * CASH ON DELIVERY
                        *
-                       * Nothing is prevented.
-                       * Form submits normally to /checkout.
+                       * Form submits normally.
                        */
 
                     }
+
             );
 
           }
+
   );
 
 </script>
 
 
-<!-- FOOTER -->
+<!-- ================= FOOTER ================= -->
 
 <div th:replace="~{fragments :: footer}"></div>
 
@@ -567,4 +706,5 @@
 <div th:replace="~{fragments :: widgets}"></div>
 
 </body>
+
 </html>

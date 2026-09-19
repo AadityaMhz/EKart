@@ -166,8 +166,8 @@ input:focus, textarea:focus, select:focus {
   color: var(--ink-soft); text-decoration: none; font-size: .88rem;
 }
 .st-dropdown-menu a:hover { background: var(--brand-50); color: var(--brand-dark); }
-.st-search-wrap { position: relative; flex: 1; max-width: 440px; }
-.st-search-wrap > i.fa-search { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: .9rem; }
+.st-search-wrap { position: relative; flex: 1; max-width: 700px; }
+.st-search-wrap i.fa-search { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: .9rem; pointer-events: none; }
 .st-search-wrap input {
   width: 100%; padding: 10px 14px 10px 38px; border: 1.5px solid var(--border) !important; border-radius: 999px !important;
   font-size: .9rem; background: var(--bg);
@@ -348,3 +348,11 @@ input:focus, textarea:focus, select:focus {
       .cart-empty { text-align: center; padding: 60px 20px; color: var(--muted); }
       .cart-empty i { font-size: 2.6rem; margin-bottom: 12px; display: block; color: var(--border); }
       @media (max-width: 860px) { .cart-wrap { grid-template-columns: 1fr; } .summary-card { position: static; } }
+.cart-color {
+    display: block;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-weight: 500;
+}

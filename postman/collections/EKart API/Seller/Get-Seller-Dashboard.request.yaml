@@ -1,0 +1,5 @@
+$kind: http-request
+name: Get Seller Dashboard
+method: GET
+url: '{{baseUrl}}/seller/dashboard'
+order: 1000

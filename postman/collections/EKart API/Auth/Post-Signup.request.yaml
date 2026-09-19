@@ -1,0 +1,23 @@
+$kind: http-request
+name: Sign Up
+method: POST
+url: '{{baseUrl}}/signup'
+order: 2000
+body:
+  type: urlencoded
+  content:
+    - key: username
+      value: testuser
+      description: Unique username
+    - key: password
+      value: password123
+      description: Plain-text password (hashed MD5 server-side)
+    - key: email
+      value: testuser@example.com
+      description: User email address
+    - key: fullName
+      value: Test User
+      description: Full name of the user
+    - key: phone
+      value: '9800000000'
+      description: Phone number

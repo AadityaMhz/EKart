@@ -1,0 +1,5 @@
+name: Ekart
+values:
+  - key: baseUrl
+    value: ''
+color: 120
